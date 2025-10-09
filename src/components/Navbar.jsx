@@ -78,6 +78,7 @@ export default function Navigation() {
                 { id: "live-trading", label: t.nav.liveTrading },
                 { id: "coaching", label: t.nav.coaching },
                 { id: "resources", label: t.nav.resources },
+                { id: "discovery", label: t.nav.discovery },
               ].map((item) => (
                 <motion.button
                   key={item.id}
@@ -166,6 +167,7 @@ export default function Navigation() {
                   { id: "live-trading", label: t.nav.liveTrading },
                   { id: "coaching", label: t.nav.coaching },
                   { id: "resources", label: t.nav.resources },
+                  { id: "discovery", label: t.nav.discovery },
                 ].map((item) => (
                   <motion.button
                     key={item.id}

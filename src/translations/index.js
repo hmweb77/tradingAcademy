@@ -5,7 +5,8 @@ export const translations = {
         liveTrading: "Live Trading",
         coaching: "Coaching",
         resources: "Resources",
-        bookCall: "Book Discovery Call"
+        bookCall: "Book Discovery Call",
+        discovery:"Discovery Call"
       },
       hero: {
         title: "Be Part of the",
@@ -86,7 +87,7 @@ export const translations = {
         experienced: "Experienced",
         goals: "What are your trading goals?",
         goalsPlaceholder: "Tell us about your trading goals and what you hope to achieve...",
-        submitButton: "Schedule My Free Call",
+        submitButton: "Schedule My Call",
         disclaimer: "We'll contact you within 24 hours to schedule your call at a convenient time."
       },
       coaching: {
@@ -205,7 +206,8 @@ export const translations = {
         liveTrading: "Trading en Direct",
         coaching: "Coaching",
         resources: "Ressources",
-        bookCall: "Réserver un Appel"
+        bookCall: "Réserver un Appel",
+        discovery:"Appel Découverte"
       },
       hero: {
         title: "Faites Partie des",
@@ -286,7 +288,7 @@ export const translations = {
         experienced: "Expérimenté",
         goals: "Quels sont vos objectifs de trading?",
         goalsPlaceholder: "Parlez-nous de vos objectifs de trading et de ce que vous espérez réaliser...",
-        submitButton: "Planifier Mon Appel Gratuit",
+        submitButton: "Planifier Mon Appel",
         disclaimer: "Nous vous contacterons dans les 24 heures pour planifier votre appel à un moment qui vous convient."
       },
       coaching: {
@@ -405,7 +407,8 @@ export const translations = {
         liveTrading: "جلسات مباشرة",
         coaching: "برنامج التدريب",
         resources: "موارد مجانية",
-        bookCall: "انضم الآن"
+        bookCall: "انضم الآن",
+        discovery:"مكالمة استكشافية"
       },
       hero: {
         title: "انضم لنخبة",
@@ -486,7 +489,7 @@ export const translations = {
         experienced: "ذو خبرة",
         goals: "ما هي أهداف التداول الخاصة بك؟",
         goalsPlaceholder: "أخبرنا عن أهداف التداول الخاصة بك وما تأمل في تحقيقه...",
-        submitButton: "جدولة مكالمتي المجانية",
+        submitButton: "جدولة مكالمتي ",
         disclaimer: "سنتصل بك خلال 24 ساعة لجدولة مكالمتك في وقت مناسب."
       },
       coaching: {

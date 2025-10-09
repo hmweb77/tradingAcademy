@@ -10,6 +10,7 @@ import FreeResourcesSection from "@/components/FreeRessources";
 import TestimonialsSection from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import { useTranslation } from "@/hooks/useTranslation";
+import DiscoveryCallSection from "@/components/DiscoveryCall";
 
 
 export default function Home() {
@@ -25,6 +26,7 @@ export default function Home() {
    <Navigation/>
       <HeroSection />
       <AboutSection />
+      <DiscoveryCallSection/>
       <LiveTradingSection />
       <GroupCoachingSection />
       <FreeResourcesSection />
