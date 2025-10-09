@@ -145,7 +145,7 @@ export default function FreeResourcesSection() {
   };
 
   return (
-    <section id="resources" ref={ref} className="py-24 bg-muted/30 scroll-mt-16">
+    <section id="resources" ref={ref} className="py-24 bg-[#f8f9fb]/30 scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -154,10 +154,10 @@ export default function FreeResourcesSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#0f172a] mb-6">
             {t.resources.title}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[#6e7b8a] max-w-3xl mx-auto leading-relaxed">
             {t.resources.subtitle}
           </p>
         </motion.div>
@@ -180,7 +180,7 @@ export default function FreeResourcesSection() {
               >
                 <div className="mx-4">
                   <motion.div
-                    className="bg-card rounded-lg border shadow-lg hover:shadow-xl transition-shadow"
+                    className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-lg hover:shadow-xl transition-shadow"
                     whileHover={{ y: -5 }}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
@@ -188,31 +188,31 @@ export default function FreeResourcesSection() {
                       <div className="space-y-6">
                         <div className="flex items-center space-x-4">
                           <motion.div
-                            className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center"
+                            className="w-12 h-12 bg-[#00b66f]/10 rounded-lg flex items-center justify-center"
                             whileHover={{ rotate: 360, scale: 1.1 }}
                             transition={{ duration: 0.6 }}
                           >
                             {(() => {
                               const Icon = resources[currentSlide].icon;
-                              return <Icon className="h-6 w-6 text-accent" />;
+                              return <Icon className="h-6 w-6 text-[#00b66f]" />;
                             })()}
                           </motion.div>
                           <div>
-                            <h3 className="text-2xl font-bold text-foreground">
+                            <h3 className="text-2xl font-bold text-[#0f172a]">
                               {resources[currentSlide].title}
                             </h3>
-                            <span className="text-sm text-accent font-medium bg-accent/10 px-2 py-1 rounded">
+                            <span className="text-sm text-[#00b66f] font-medium bg-[#00b66f]/10 px-2 py-1 rounded">
                               {resources[currentSlide].pages}
                             </span>
                           </div>
                         </div>
 
-                        <p className="text-muted-foreground leading-relaxed text-lg">
+                        <p className="text-[#6e7b8a] leading-relaxed text-lg">
                           {resources[currentSlide].description}
                         </p>
 
                         <div className="space-y-3">
-                          <h4 className="font-semibold text-foreground">
+                          <h4 className="font-semibold text-[#0f172a]">
                             {t.resources.includedTitle}
                           </h4>
                           <ul className="space-y-2">
@@ -227,10 +227,10 @@ export default function FreeResourcesSection() {
                                 whileHover={{ x: 5 }}
                               >
                                 <motion.div
-                                  className="w-2 h-2 bg-accent rounded-full"
+                                  className="w-2 h-2 bg-[#00b66f] rounded-full"
                                   whileHover={{ scale: 1.5 }}
                                 />
-                                <span className="text-muted-foreground group-hover:text-foreground transition-colors">
+                                <span className="text-[#6e7b8a] group-hover:text-[#0f172a] transition-colors">
                                   {feature}
                                 </span>
                               </motion.li>
@@ -240,7 +240,7 @@ export default function FreeResourcesSection() {
 
                         <motion.button
                           onClick={() => handleGetResource(resources[currentSlide])}
-                          className="bg-accent hover:bg-accent/90 text-white px-8 py-4 text-lg font-semibold rounded-lg inline-flex items-center gap-2 group"
+                          className="bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-8 py-4 text-lg font-semibold rounded-lg inline-flex items-center gap-2 group"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.98 }}
                           data-testid={`get-resource-${resources[currentSlide].id}`}
@@ -253,7 +253,7 @@ export default function FreeResourcesSection() {
                       {/* Resource Preview */}
                       <div className="flex items-center justify-center">
                         <motion.div
-                          className="bg-gradient-to-br from-accent/10 to-accent/5 rounded-lg p-8 w-full h-64 flex items-center justify-center"
+                          className="bg-gradient-to-br from-[#00b66f]/10 to-[#00b66f]/5 rounded-lg p-8 w-full h-64 flex items-center justify-center"
                           whileHover={{ scale: 1.02 }}
                         >
                           <div className="text-center">
@@ -263,13 +263,13 @@ export default function FreeResourcesSection() {
                             >
                               {(() => {
                                 const Icon = resources[currentSlide].icon;
-                                return <Icon className="h-16 w-16 text-accent mx-auto mb-4" />;
+                                return <Icon className="h-16 w-16 text-[#00b66f] mx-auto mb-4" />;
                               })()}
                             </motion.div>
-                            <div className="text-sm text-muted-foreground">
+                            <div className="text-sm text-[#6e7b8a]">
                               {t.resources.preview}
                             </div>
-                            <div className="font-semibold text-foreground">
+                            <div className="font-semibold text-[#0f172a]">
                               {resources[currentSlide].title}
                             </div>
                           </div>
@@ -286,7 +286,7 @@ export default function FreeResourcesSection() {
           <div className="flex justify-center items-center gap-4 mt-8">
             <motion.button
               onClick={handlePrev}
-              className="bg-background/90 backdrop-blur-sm border rounded-lg p-2 hover:bg-accent/10 transition-colors"
+              className="bg-[#ffffff]/90 backdrop-blur-sm border border-[#e2e5e9] rounded-lg p-2 hover:bg-[#00b66f]/10 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               data-testid="carousel-prev"
@@ -304,7 +304,7 @@ export default function FreeResourcesSection() {
                     setCurrentSlide(index);
                   }}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentSlide ? "bg-accent" : "bg-muted-foreground/30"
+                    index === currentSlide ? "bg-[#00b66f]" : "bg-[#6e7b8a]/30"
                   }`}
                   whileHover={{ scale: 1.3 }}
                   whileTap={{ scale: 0.9 }}
@@ -315,7 +315,7 @@ export default function FreeResourcesSection() {
 
             <motion.button
               onClick={handleNext}
-              className="bg-background/90 backdrop-blur-sm border rounded-lg p-2 hover:bg-accent/10 transition-colors"
+              className="bg-[#ffffff]/90 backdrop-blur-sm border border-[#e2e5e9] rounded-lg p-2 hover:bg-[#00b66f]/10 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               data-testid="carousel-next"
@@ -332,7 +332,7 @@ export default function FreeResourcesSection() {
           <>
             {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-[#ffffff]/80 backdrop-blur-sm z-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -348,13 +348,13 @@ export default function FreeResourcesSection() {
               transition={{ duration: 0.2 }}
             >
               <motion.div
-                className="bg-card rounded-lg border shadow-xl max-w-md w-full p-6 relative"
+                className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-xl max-w-md w-full p-6 relative"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Close Button */}
                 <motion.button
                   onClick={closePopup}
-                  className="absolute top-4 right-4 p-2 rounded-lg hover:bg-accent/10 transition-colors"
+                  className="absolute top-4 right-4 p-2 rounded-lg hover:bg-[#00b66f]/10 transition-colors"
                   whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -365,7 +365,7 @@ export default function FreeResourcesSection() {
                 <div className="flex items-center space-x-3 mb-6">
                   {selectedResource && (
                     <>
-                      <selectedResource.icon className="h-6 w-6 text-accent" />
+                      <selectedResource.icon className="h-6 w-6 text-[#00b66f]" />
                       <h3 className="text-xl font-bold">
                         {t.resources.downloadTitle} {selectedResource.title}
                       </h3>
@@ -380,22 +380,22 @@ export default function FreeResourcesSection() {
                     animate={{ opacity: 1, y: 0 }}
                   >
                     <motion.div
-                      className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6"
+                      className="w-16 h-16 bg-[#00b66f]/10 rounded-full flex items-center justify-center mx-auto mb-6"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 0.5 }}
                     >
-                      <CheckCircle2 className="h-8 w-8 text-accent" />
+                      <CheckCircle2 className="h-8 w-8 text-[#00b66f]" />
                     </motion.div>
-                    <h3 className="text-xl font-bold text-foreground mb-4">
+                    <h3 className="text-xl font-bold text-[#0f172a] mb-4">
                       {t.resources.checkEmail}
                     </h3>
-                    <p className="text-muted-foreground mb-6">
+                    <p className="text-[#6e7b8a] mb-6">
                       {t.resources.emailSent} "{selectedResource?.title}".{" "}
                       {t.resources.checkInbox}
                     </p>
                     <motion.button
                       onClick={closePopup}
-                      className="w-full bg-accent hover:bg-accent/90 text-white px-4 py-2 rounded-lg font-medium"
+                      className="w-full bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-4 py-2 rounded-lg font-medium"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -410,7 +410,7 @@ export default function FreeResourcesSection() {
                     animate={{ opacity: 1 }}
                   >
                     <div className="text-center mb-6">
-                      <p className="text-muted-foreground">
+                      <p className="text-[#6e7b8a]">
                         {t.resources.downloadDesc}
                       </p>
                     </div>
@@ -428,7 +428,7 @@ export default function FreeResourcesSection() {
                         }
                         placeholder={t.resources.fullName}
                         required
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent bg-background"
+                        className="w-full px-4 py-2 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff]"
                         data-testid="popup-input-name"
                       />
                     </div>
@@ -446,14 +446,14 @@ export default function FreeResourcesSection() {
                         }
                         placeholder={t.resources.emailAddress}
                         required
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent bg-background"
+                        className="w-full px-4 py-2 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff]"
                         data-testid="popup-input-email"
                       />
                     </div>
 
                     <motion.button
                       type="submit"
-                      className="w-full bg-accent hover:bg-accent/90 text-white py-3 text-lg font-semibold rounded-lg"
+                      className="w-full bg-[#00b66f] hover:bg-[#00b66f]/90 text-white py-3 text-lg font-semibold rounded-lg"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       data-testid="popup-submit"
@@ -461,7 +461,7 @@ export default function FreeResourcesSection() {
                       {t.resources.receiveButton}
                     </motion.button>
 
-                    <p className="text-xs text-muted-foreground text-center">
+                    <p className="text-xs text-[#6e7b8a] text-center">
                       {t.resources.privacy}
                     </p>
                   </motion.form>

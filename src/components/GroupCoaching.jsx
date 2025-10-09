@@ -117,10 +117,10 @@ export default function GroupCoachingSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#0f172a] mb-6">
             {t.coaching.title}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[#6e7b8a] max-w-3xl mx-auto leading-relaxed">
             {t.coaching.subtitle}
           </p>
         </motion.div>
@@ -138,22 +138,22 @@ export default function GroupCoachingSection() {
               {benefits.map((benefit, index) => (
                 <motion.div
                   key={index}
-                  className="bg-card rounded-lg border shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-sm hover:shadow-md transition-shadow"
                   variants={cardVariants}
                   whileHover={{ y: -5, scale: 1.02 }}
                 >
                   <div className="p-6 text-center">
                     <motion.div
-                      className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4"
+                      className="w-12 h-12 bg-[#00b66f]/10 rounded-lg flex items-center justify-center mx-auto mb-4"
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.6 }}
                     >
-                      <benefit.icon className="h-6 w-6 text-accent" />
+                      <benefit.icon className="h-6 w-6 text-[#00b66f]" />
                     </motion.div>
-                    <h3 className="font-semibold text-foreground mb-2">
+                    <h3 className="font-semibold text-[#0f172a] mb-2">
                       {benefit.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-sm text-[#6e7b8a] leading-relaxed">
                       {benefit.description}
                     </p>
                   </div>
@@ -163,14 +163,14 @@ export default function GroupCoachingSection() {
 
             {/* Features Card */}
             <motion.div
-              className="bg-accent/5 border-accent/20 rounded-lg border"
+              className="bg-[#00b66f]/5 border-[#00b66f]/20 rounded-lg border"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               <div className="p-8">
-                <h3 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-accent" />
+                <h3 className="text-xl font-semibold text-[#0f172a] mb-6 flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-[#00b66f]" />
                   {t.coaching.includedTitle}
                 </h3>
                 <motion.div
@@ -187,10 +187,10 @@ export default function GroupCoachingSection() {
                       whileHover={{ x: 5 }}
                     >
                       <motion.div
-                        className="w-2 h-2 bg-accent rounded-full flex-shrink-0"
+                        className="w-2 h-2 bg-[#00b66f] rounded-full flex-shrink-0"
                         whileHover={{ scale: 1.5 }}
                       />
-                      <span className="text-muted-foreground group-hover:text-foreground transition-colors">
+                      <span className="text-[#6e7b8a] group-hover:text-[#0f172a] transition-colors">
                         {feature}
                       </span>
                     </motion.div>
@@ -227,7 +227,7 @@ export default function GroupCoachingSection() {
 
             {/* Floating Price Card */}
             <motion.div
-              className="absolute -bottom-8 -left-8 bg-card/95 backdrop-blur-sm max-w-xs rounded-lg border shadow-lg"
+              className="absolute -bottom-8 -left-8 bg-[#f7f9fa]/95 backdrop-blur-sm max-w-xs rounded-lg border border-[#e2e5e9] shadow-lg"
               variants={floatingCardVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -236,19 +236,19 @@ export default function GroupCoachingSection() {
               <div className="p-6">
                 <div className="text-center">
                   <motion.div
-                    className="text-2xl font-bold text-accent mb-1"
+                    className="text-2xl font-bold text-[#00b66f] mb-1"
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
                     {t.coaching.weeks}
                   </motion.div>
-                  <div className="text-sm text-muted-foreground mb-4">
+                  <div className="text-sm text-[#6e7b8a] mb-4">
                     {t.coaching.program}
                   </div>
-                  <div className="text-lg font-semibold text-foreground">
+                  <div className="text-lg font-semibold text-[#0f172a]">
                     {t.coaching.price}
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-[#6e7b8a]">
                     {t.coaching.payment}
                   </div>
                 </div>
@@ -264,28 +264,28 @@ export default function GroupCoachingSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
-          <div className="max-w-2xl mx-auto bg-card rounded-lg border shadow-lg hover:shadow-xl transition-shadow">
+          <div className="max-w-2xl mx-auto bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-lg hover:shadow-xl transition-shadow">
             <div className="p-8">
               <motion.h3
-                className="text-2xl font-bold text-foreground mb-4 flex items-center justify-center gap-2"
+                className="text-2xl font-bold text-[#0f172a] mb-4 flex items-center justify-center gap-2"
                 whileHover={{ scale: 1.05 }}
               >
-                <Sparkles className="h-6 w-6 text-accent" />
+                <Sparkles className="h-6 w-6 text-[#00b66f]" />
                 {t.coaching.readyTitle}
               </motion.h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
+              <p className="text-[#6e7b8a] mb-6 leading-relaxed">
                 {t.coaching.readyDesc}
               </p>
               <div className="space-y-4">
-                <div className="flex justify-center space-x-4 text-sm text-muted-foreground">
+                <div className="flex justify-center space-x-4 text-sm text-[#6e7b8a]">
                   <span>{t.coaching.nextCohort}</span>
-                  <span className="text-accent font-semibold">
+                  <span className="text-[#00b66f] font-semibold">
                     {t.coaching.spotsAvailable}
                   </span>
                 </div>
                 <motion.button
                   onClick={handleLearnMore}
-                  className="bg-accent hover:bg-accent/90 text-white px-8 py-4 text-lg font-semibold rounded-lg inline-flex items-center gap-2"
+                  className="bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-8 py-4 text-lg font-semibold rounded-lg inline-flex items-center gap-2"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   data-testid="group-coaching-cta"

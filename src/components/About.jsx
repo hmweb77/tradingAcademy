@@ -84,7 +84,7 @@ export default function AboutSection() {
     <section
       id="about"
       ref={ref}
-      className="py-24 bg-muted/30 scroll-mt-16"
+      className="py-24 bg-[#f8f9fb]/30  scroll-mt-16"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -94,10 +94,10 @@ export default function AboutSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#0f172a]  mb-6">
             {t.about.title}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[#6e7b8a]  max-w-3xl mx-auto leading-relaxed">
             {t.about.subtitle}
           </p>
         </motion.div>
@@ -115,20 +115,20 @@ export default function AboutSection() {
               variants={cardVariants}
               whileHover={{ y: -8, scale: 1.02 }}
               transition={{ duration: 0.3 }}
-              className="bg-card rounded-lg border shadow-sm hover:shadow-lg transition-shadow"
+              className="bg-[#f7f9fa]  rounded-lg border border-[#e2e5e9]  shadow-sm hover:shadow-lg transition-shadow"
             >
               <div className="p-8 text-center">
                 <motion.div
-                  className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6"
+                  className="w-16 h-16 bg-[#00b66f]/10  rounded-full flex items-center justify-center mx-auto mb-6"
                   whileHover={{ rotate: 360, scale: 1.1 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <feature.icon className="h-8 w-8 text-accent" />
+                  <feature.icon className="h-8 w-8 text-[#00b66f] " />
                 </motion.div>
-                <h3 className="text-xl font-semibold text-foreground mb-4">
+                <h3 className="text-xl font-semibold text-[#0f172a]  mb-4">
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-[#6e7b8a]  leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -138,14 +138,14 @@ export default function AboutSection() {
 
         {/* Why Choose Us Section */}
         <motion.div
-          className="bg-card p-8 md:p-12 rounded-lg border"
+          className="bg-[#f7f9fa]  p-8 md:p-12 rounded-lg border border-[#e2e5e9] "
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.7, delay: 0.3 }}
         >
           <div className="max-w-4xl mx-auto text-center">
             <motion.h3
-              className="text-2xl md:text-3xl font-bold text-foreground mb-6"
+              className="text-2xl md:text-3xl font-bold text-[#0f172a]  mb-6"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ delay: 0.4 }}
@@ -153,7 +153,7 @@ export default function AboutSection() {
               {t.about.whyTitle}
             </motion.h3>
             <motion.p
-              className="text-lg text-muted-foreground mb-8 leading-relaxed"
+              className="text-lg text-[#6e7b8a]  mb-8 leading-relaxed"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ delay: 0.5 }}
@@ -184,15 +184,15 @@ export default function AboutSection() {
               ].map((pillar, index) => (
                 <motion.div
                   key={index}
-                  className="p-6 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors"
+                  className="p-6 bg-[#f8f9fb]/50  rounded-lg hover:bg-[#f8f9fb]/70  transition-colors"
                   variants={pillarVariants}
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h4 className="font-semibold text-foreground mb-3">
+                  <h4 className="font-semibold text-[#0f172a]  mb-3">
                     {pillar.title}
                   </h4>
-                  <p className="text-muted-foreground">{pillar.desc}</p>
+                  <p className="text-[#6e7b8a] ">{pillar.desc}</p>
                 </motion.div>
               ))}
             </motion.div>

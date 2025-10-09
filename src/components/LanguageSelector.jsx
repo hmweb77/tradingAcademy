@@ -40,7 +40,7 @@ export default function LanguageSelector() {
       {/* Trigger Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
+        className="p-2 rounded-lg hover:bg-[#00b66f]/10 transition-colors"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         data-testid="language-selector"
@@ -52,7 +52,7 @@ export default function LanguageSelector() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="absolute right-0 mt-2 w-48 bg-card border rounded-lg shadow-lg z-50 overflow-hidden"
+            className="absolute right-0 mt-2 w-48 bg-[#f7f9fa] border border-[#e2e5e9] rounded-lg shadow-lg z-50 overflow-hidden"
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -62,8 +62,8 @@ export default function LanguageSelector() {
               <motion.button
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
-                className={`w-full text-left px-4 py-3 hover:bg-accent/10 transition-colors flex items-center gap-3 ${
-                  language === lang.code ? 'bg-accent/10 font-semibold' : ''
+                className={`w-full text-left px-4 py-3 hover:bg-[#00b66f]/10 transition-colors flex items-center gap-3 ${
+                  language === lang.code ? 'bg-[#00b66f]/10 font-semibold' : ''
                 } ${index === 0 ? 'rounded-t-lg' : ''} ${
                   index === languages.length - 1 ? 'rounded-b-lg' : ''
                 }`}
@@ -72,12 +72,12 @@ export default function LanguageSelector() {
                 data-testid={`language-option-${lang.code}`}
               >
                 <span className="text-2xl">{lang.flag}</span>
-                <span className={language === lang.code ? 'text-accent' : ''}>
+                <span className={language === lang.code ? 'text-[#00b66f]' : ''}>
                   {lang.name}
                 </span>
                 {language === lang.code && (
                   <motion.span
-                    className="ml-auto text-accent"
+                    className="ml-auto text-[#00b66f]"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.2 }}

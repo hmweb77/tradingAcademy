@@ -52,7 +52,7 @@ export default function Navigation() {
 
   return (
     <motion.nav
-      className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b"
+      className="fixed top-0 left-0 right-0 z-50 bg-[#ffffff]/95 backdrop-blur-sm border-b border-[#e2e5e9]"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
@@ -65,7 +65,7 @@ export default function Navigation() {
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <span className="text-2xl font-bold text-foreground bg-gradient-to-r from-foreground to-accent bg-clip-text">
+            <span className="text-2xl font-bold text-[#0f172a] bg-gradient-to-r from-[#0f172a] to-[#00b66f] bg-clip-text">
               Ten Percent Academy
             </span>
           </motion.div>
@@ -82,14 +82,14 @@ export default function Navigation() {
                 <motion.button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="text-muted-foreground hover:text-foreground px-3 py-2 text-sm font-medium transition-colors relative group"
+                  className="text-[#6e7b8a] hover:text-[#0f172a] px-3 py-2 text-sm font-medium transition-colors relative group"
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   data-testid={`nav-${item.id}`}
                 >
                   {item.label}
                   <motion.span
-                    className="absolute bottom-0 left-0 w-full h-0.5 bg-accent origin-left"
+                    className="absolute bottom-0 left-0 w-full h-0.5 bg-[#00b66f] origin-left"
                     initial={{ scaleX: 0 }}
                     whileHover={{ scaleX: 1 }}
                     transition={{ duration: 0.3 }}
@@ -104,7 +104,7 @@ export default function Navigation() {
             <LanguageSelector />
             <motion.button
               onClick={() => scrollToSection("coaching")}
-              className="bg-chart-3 hover:bg-chart-3/90 text-white px-4 py-2 rounded-lg font-medium inline-flex items-center gap-2"
+              className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-4 py-2 rounded-lg font-medium inline-flex items-center gap-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               data-testid="nav-cta"
@@ -118,7 +118,7 @@ export default function Navigation() {
           <div className="md:hidden flex items-center space-x-2">
             <LanguageSelector />
             <motion.button
-              className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
+              className="p-2 rounded-lg hover:bg-[#00b66f]/10 transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileTap={{ scale: 0.9 }}
               data-testid="mobile-menu-toggle"
@@ -160,7 +160,7 @@ export default function Navigation() {
               animate="visible"
               exit="hidden"
             >
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-card rounded-lg mt-2 border">
+              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[#f7f9fa] rounded-lg mt-2 border border-[#e2e5e9]">
                 {[
                   { id: "about", label: t.nav.about },
                   { id: "live-trading", label: t.nav.liveTrading },
@@ -170,7 +170,7 @@ export default function Navigation() {
                   <motion.button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className="text-muted-foreground hover:text-foreground hover:bg-accent/10 block px-3 py-2 text-base font-medium w-full text-left rounded-md transition-colors"
+                    className="text-[#6e7b8a] hover:text-[#0f172a] hover:bg-[#00b66f]/10 block px-3 py-2 text-base font-medium w-full text-left rounded-md transition-colors"
                     variants={menuItemVariants}
                     whileTap={{ scale: 0.98 }}
                     data-testid={`mobile-nav-${item.id}`}
@@ -181,7 +181,7 @@ export default function Navigation() {
                 <motion.div className="px-3 py-2" variants={menuItemVariants}>
                   <button
                     onClick={() => scrollToSection("coaching")}
-                    className="w-full bg-chart-3 hover:bg-chart-3/90 text-white px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center gap-2"
+                    className="w-full bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center gap-2"
                     data-testid="mobile-nav-cta"
                   >
                     <PhoneCall className="h-4 w-4" />

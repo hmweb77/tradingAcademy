@@ -86,7 +86,7 @@ export default function HeroSection() {
           priority
           quality={90}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/80 to-background/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#ffffff]/90 via-[#ffffff]/80 to-[#ffffff]/70"></div>
       </div>
 
       {/* Content */}
@@ -99,18 +99,18 @@ export default function HeroSection() {
         <div className="max-w-4xl mx-auto">
           {/* Title */}
           <motion.h1
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-8 leading-tight"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#0f172a]  mb-8 leading-tight"
             variants={itemVariants}
           >
             {t.hero.title}{" "}
-            <span className="text-accent bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent">
+            <span className="text-[#00b66f]  bg-gradient-to-r from-[#00b66f] to-[#00b66f]/70 bg-clip-text ">
               {t.hero.winners}
             </span>
           </motion.h1>
 
           {/* Subtitle */}
           <motion.p
-            className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl text-[#6e7b8a]  mb-12 max-w-3xl mx-auto leading-relaxed"
             variants={itemVariants}
           >
             {t.hero.subtitle}
@@ -123,7 +123,7 @@ export default function HeroSection() {
           >
             <motion.button
               onClick={handleBookCall}
-              className="bg-chart-3 hover:bg-chart-3/90 text-white px-8 py-4 text-lg font-semibold rounded-lg group inline-flex items-center transition-colors"
+              className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-8 py-4 text-lg font-semibold rounded-lg group inline-flex items-center transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               data-testid="hero-book-call"
@@ -134,7 +134,7 @@ export default function HeroSection() {
 
             <motion.button
               onClick={handleDownloadResources}
-              className="px-8 py-4 text-lg font-semibold border-2 rounded-lg group bg-background/80 backdrop-blur-sm inline-flex items-center hover:bg-accent/10 transition-colors"
+              className="px-8 py-4 text-lg font-semibold border-2 border-[#e2e5e9]  rounded-lg group bg-[#ffffff]/80  backdrop-blur-sm inline-flex items-center hover:bg-[#00b66f]/10  transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               data-testid="hero-download-resources"
@@ -150,30 +150,30 @@ export default function HeroSection() {
             variants={containerVariants}
           >
             <motion.div
-              className="bg-card/80 backdrop-blur-sm p-6 rounded-lg hover:bg-card/90 transition-colors"
+              className="bg-[#f7f9fa]/80  backdrop-blur-sm p-6 rounded-lg hover:bg-[#f7f9fa]/90  transition-colors"
               variants={statVariants}
               whileHover={{ y: -5 }}
             >
-              <div className="text-3xl font-bold text-accent mb-2">500+</div>
-              <div className="text-muted-foreground">{t.hero.stat1}</div>
+              <div className="text-3xl font-bold text-[#00b66f]  mb-2">500+</div>
+              <div className="text-[#6e7b8a] ">{t.hero.stat1}</div>
             </motion.div>
 
             <motion.div
-              className="bg-card/80 backdrop-blur-sm p-6 rounded-lg hover:bg-card/90 transition-colors"
+              className="bg-[#f7f9fa]/80  backdrop-blur-sm p-6 rounded-lg hover:bg-[#f7f9fa]/90  transition-colors"
               variants={statVariants}
               whileHover={{ y: -5 }}
             >
-              <div className="text-3xl font-bold text-accent mb-2">90%</div>
-              <div className="text-muted-foreground">{t.hero.stat2}</div>
+              <div className="text-3xl font-bold text-[#00b66f]  mb-2">90%</div>
+              <div className="text-[#6e7b8a] ">{t.hero.stat2}</div>
             </motion.div>
 
             <motion.div
-              className="bg-card/80 backdrop-blur-sm p-6 rounded-lg hover:bg-card/90 transition-colors"
+              className="bg-[#f7f9fa]/80 backdrop-blur-sm p-6 rounded-lg hover:bg-[#f7f9fa]/90  transition-colors"
               variants={statVariants}
               whileHover={{ y: -5 }}
             >
-              <div className="text-3xl font-bold text-accent mb-2">5+</div>
-              <div className="text-muted-foreground">{t.hero.stat3}</div>
+              <div className="text-3xl font-bold text-[#00b66f]  mb-2">5+</div>
+              <div className="text-[#6e7b8a] ">{t.hero.stat3}</div>
             </motion.div>
           </motion.div>
         </div>

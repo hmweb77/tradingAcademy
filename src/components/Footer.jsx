@@ -77,7 +77,7 @@ export default function Footer() {
   };
 
   return (
-    <footer ref={ref} className="bg-secondary text-secondary-foreground relative">
+    <footer ref={ref} className="bg-[#0f172a] text-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <motion.div
@@ -93,16 +93,16 @@ export default function Footer() {
                 className="text-2xl font-bold flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
               >
-                <TrendingUp className="h-6 w-6 text-chart-3" />
+                <TrendingUp className="h-6 w-6 text-[#f5b53f]" />
                 Ten Percent Academy
               </motion.h3>
-              <p className="text-secondary-foreground/80 leading-relaxed">
+              <p className="text-white/80 leading-relaxed">
                 {t.footer.tagline}
               </p>
               <div className="pt-4">
                 <motion.button
                   onClick={handleStartJourney}
-                  className="bg-chart-3 hover:bg-chart-3/90 text-white px-6 py-3 rounded-lg font-medium"
+                  className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-6 py-3 rounded-lg font-medium"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   data-testid="footer-cta"
@@ -130,14 +130,14 @@ export default function Footer() {
                   <motion.button
                     key={link.id}
                     onClick={() => scrollToSection(link.id)}
-                    className="block text-secondary-foreground/80 hover:text-secondary-foreground transition-colors text-left group"
+                    className="block text-white/80 hover:text-white transition-colors text-left group"
                     variants={linkVariants}
                     whileHover={{ x: 5 }}
                     data-testid={`footer-${link.id}`}
                   >
                     <span className="relative">
                       {link.label}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-chart-3 group-hover:w-full transition-all duration-300"></span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#f5b53f] group-hover:w-full transition-all duration-300"></span>
                     </span>
                   </motion.button>
                 ))}
@@ -155,7 +155,7 @@ export default function Footer() {
               >
                 <motion.button
                   onClick={() => scrollToSection("coaching")}
-                  className="block text-secondary-foreground/80 hover:text-secondary-foreground transition-colors text-left"
+                  className="block text-white/80 hover:text-white transition-colors text-left"
                   variants={linkVariants}
                   whileHover={{ x: 5 }}
                   data-testid="footer-group-coaching"
@@ -164,7 +164,7 @@ export default function Footer() {
                 </motion.button>
                 <motion.button
                   onClick={() => scrollToSection("live-trading")}
-                  className="block text-secondary-foreground/80 hover:text-secondary-foreground transition-colors text-left"
+                  className="block text-white/80 hover:text-white transition-colors text-left"
                   variants={linkVariants}
                   whileHover={{ x: 5 }}
                   data-testid="footer-private-group"
@@ -172,7 +172,7 @@ export default function Footer() {
                   {t.footer.privateGroup}
                 </motion.button>
                 <motion.span
-                  className="block text-secondary-foreground/60"
+                  className="block text-white/60"
                   variants={linkVariants}
                 >
                   {t.footer.mentorship}
@@ -203,16 +203,16 @@ export default function Footer() {
                     variants={linkVariants}
                     whileHover={{ x: 5 }}
                   >
-                    <contact.icon className="h-5 w-5 text-chart-3 group-hover:scale-110 transition-transform" />
+                    <contact.icon className="h-5 w-5 text-[#f5b53f] group-hover:scale-110 transition-transform" />
                     {contact.href ? (
                       <a
                         href={contact.href}
-                        className="text-secondary-foreground/80 hover:text-secondary-foreground transition-colors"
+                        className="text-white/80 hover:text-white transition-colors"
                       >
                         {contact.text}
                       </a>
                     ) : (
-                      <span className="text-secondary-foreground/80">
+                      <span className="text-white/80">
                         {contact.text}
                       </span>
                     )}
@@ -225,13 +225,13 @@ export default function Footer() {
 
         {/* Bottom Footer */}
         <motion.div
-          className="border-t border-secondary-foreground/20 py-8"
+          className="border-t border-white/20 py-8"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-secondary-foreground/60 text-sm">
+            <div className="text-white/60 text-sm">
               {t.footer.copyright}
             </div>
             <div className="flex space-x-6 text-sm">
@@ -242,11 +242,11 @@ export default function Footer() {
               ].map((item, index) => (
                 <motion.button
                   key={index}
-                  className="text-secondary-foreground/60 hover:text-secondary-foreground transition-colors relative group"
+                  className="text-white/60 hover:text-white transition-colors relative group"
                   whileHover={{ y: -2 }}
                 >
                   {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-chart-3 group-hover:w-full transition-all duration-300"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#f5b53f] group-hover:w-full transition-all duration-300"></span>
                 </motion.button>
               ))}
             </div>
@@ -259,7 +259,7 @@ export default function Footer() {
         {showScrollTop && (
           <motion.button
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 bg-chart-3 hover:bg-chart-3/90 text-white p-3 rounded-full shadow-lg z-40"
+            className="fixed bottom-8 right-8 bg-[#f5b53f] hover:bg-[#e6a52e] text-white p-3 rounded-full shadow-lg z-40"
             initial={{ opacity: 0, scale: 0, y: 100 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0, y: 100 }}

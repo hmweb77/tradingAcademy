@@ -93,10 +93,10 @@ export default function LiveTradingSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#0f172a] mb-6">
             {t.liveTrading.title}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[#6e7b8a] max-w-3xl mx-auto leading-relaxed">
             {t.liveTrading.subtitle}
           </p>
         </motion.div>
@@ -118,17 +118,17 @@ export default function LiveTradingSection() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
-                  className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors"
+                  className="w-12 h-12 bg-[#00b66f]/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-[#00b66f]/20 transition-colors"
                   whileHover={{ rotate: 360, scale: 1.1 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <benefit.icon className="h-6 w-6 text-accent" />
+                  <benefit.icon className="h-6 w-6 text-[#00b66f]" />
                 </motion.div>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg font-semibold text-[#0f172a] mb-2">
                     {benefit.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-[#6e7b8a] leading-relaxed">
                     {benefit.description}
                   </p>
                 </div>
@@ -138,7 +138,7 @@ export default function LiveTradingSection() {
 
           {/* Pricing Card */}
           <motion.div
-            className="bg-card rounded-lg border shadow-lg hover:shadow-xl transition-shadow"
+            className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-lg hover:shadow-xl transition-shadow"
             variants={cardVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -147,23 +147,23 @@ export default function LiveTradingSection() {
             <div className="p-8">
               <div className="text-center">
                 <motion.div
-                  className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6 relative overflow-hidden"
+                  className="w-20 h-20 bg-[#00b66f]/10 rounded-full flex items-center justify-center mx-auto mb-6 relative overflow-hidden"
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.3 }}
                 >
                   <motion.div
-                    className="absolute inset-0 bg-accent/20"
+                    className="absolute inset-0 bg-[#00b66f]/20"
                     initial={{ scale: 0, opacity: 0 }}
                     whileHover={{ scale: 2, opacity: 1 }}
                     transition={{ duration: 0.5 }}
                   />
-                  <Users className="h-10 w-10 text-accent relative z-10" />
+                  <Users className="h-10 w-10 text-[#00b66f] relative z-10" />
                 </motion.div>
 
-                <h3 className="text-2xl font-bold text-foreground mb-4">
+                <h3 className="text-2xl font-bold text-[#0f172a] mb-4">
                   {t.liveTrading.cardTitle}
                 </h3>
-                <p className="text-muted-foreground mb-8 leading-relaxed">
+                <p className="text-[#6e7b8a] mb-8 leading-relaxed">
                   {t.liveTrading.cardDesc}
                 </p>
 
@@ -190,12 +190,12 @@ export default function LiveTradingSection() {
                   ].map((detail, index) => (
                     <motion.div
                       key={index}
-                      className="flex justify-between items-center p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
+                      className="flex justify-between items-center p-3 bg-[#f8f9fb]/50 rounded-lg hover:bg-[#f8f9fb] transition-colors"
                       variants={detailVariants}
                       whileHover={{ scale: 1.02 }}
                     >
                       <span className="font-medium">{detail.label}</span>
-                      <span className="text-accent font-semibold">
+                      <span className="text-[#00b66f] font-semibold">
                         {detail.value}
                       </span>
                     </motion.div>
@@ -205,7 +205,7 @@ export default function LiveTradingSection() {
                 {/* CTA Button */}
                 <motion.button
                   onClick={handleJoinGroup}
-                  className="w-full bg-accent hover:bg-accent/90 text-white py-4 text-lg font-semibold rounded-lg inline-flex items-center justify-center gap-2 group"
+                  className="w-full bg-[#00b66f] hover:bg-[#00b66f]/90 text-white py-4 text-lg font-semibold rounded-lg inline-flex items-center justify-center gap-2 group"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                   data-testid="join-live-trading"
@@ -215,7 +215,7 @@ export default function LiveTradingSection() {
                 </motion.button>
 
                 <motion.p
-                  className="text-sm text-muted-foreground mt-4"
+                  className="text-sm text-[#6e7b8a] mt-4"
                   initial={{ opacity: 0 }}
                   animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ delay: 0.8 }}

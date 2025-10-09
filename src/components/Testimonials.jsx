@@ -48,7 +48,7 @@ export default function TestimonialsSection() {
       >
         <Star
           className={`h-5 w-5 ${
-            i < rating ? "text-yellow-400 fill-current" : "text-gray-300"
+            i < rating ? "text-[#fbbf24] fill-current" : "text-[#d1d5db]"
           }`}
         />
       </motion.div>
@@ -111,10 +111,10 @@ export default function TestimonialsSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#0f172a] mb-6">
             {t.testimonials.title}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[#6e7b8a] max-w-3xl mx-auto leading-relaxed">
             {t.testimonials.subtitle}
           </p>
         </motion.div>
@@ -129,7 +129,7 @@ export default function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
-              className="bg-card rounded-lg border shadow-sm hover:shadow-lg transition-shadow h-full"
+              className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-sm hover:shadow-lg transition-shadow h-full"
               variants={cardVariants}
               whileHover={{ y: -8, scale: 1.02 }}
               transition={{ duration: 0.3 }}
@@ -141,11 +141,11 @@ export default function TestimonialsSection() {
                   variants={quoteVariants}
                   whileHover={{ scale: 1.2, rotate: 15 }}
                 >
-                  <Quote className="h-8 w-8 text-accent" />
+                  <Quote className="h-8 w-8 text-[#00b66f]" />
                 </motion.div>
 
                 {/* Testimonial Text */}
-                <blockquote className="text-muted-foreground leading-relaxed mb-6 flex-grow">
+                <blockquote className="text-[#6e7b8a] leading-relaxed mb-6 flex-grow">
                   "{testimonial.testimonial}"
                 </blockquote>
 
@@ -160,7 +160,7 @@ export default function TestimonialsSection() {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <span className="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="inline-block bg-[#00b66f]/10 text-[#00b66f] px-3 py-1 rounded-full text-sm font-medium">
                     {testimonial.results}
                   </span>
                 </motion.div>
@@ -181,10 +181,10 @@ export default function TestimonialsSection() {
                     />
                   </motion.div>
                   <div>
-                    <div className="font-semibold text-foreground">
+                    <div className="font-semibold text-[#0f172a]">
                       {testimonial.name}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-[#6e7b8a]">
                       {testimonial.title}
                     </div>
                   </div>
@@ -209,12 +209,12 @@ export default function TestimonialsSection() {
           ].map((stat, index) => (
             <motion.div
               key={index}
-              className="bg-card p-6 rounded-lg border hover:border-accent/50 transition-colors"
+              className="bg-[#f7f9fa] p-6 rounded-lg border border-[#e2e5e9] hover:border-[#00b66f]/50 transition-colors"
               variants={statVariants}
               whileHover={{ y: -5, scale: 1.05 }}
             >
               <motion.div
-                className="text-3xl font-bold text-accent mb-2"
+                className="text-3xl font-bold text-[#00b66f] mb-2"
                 animate={
                   isInView
                     ? {
@@ -229,7 +229,7 @@ export default function TestimonialsSection() {
               >
                 {stat.value}
               </motion.div>
-              <div className="text-muted-foreground">{stat.label}</div>
+              <div className="text-[#6e7b8a]">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
