@@ -4,18 +4,50 @@ import { Users, MessageSquare, Trophy, BookOpen, CheckCircle, Sparkles } from "l
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import EnrollmentPopup from "@/components/EnrollmentPopup";
 
+import { sanityFetch } from "../../sanity/lib/client";
+import { groupCoachingSettingsQuery } from "../../sanity/lib/queries";
+
 export default function GroupCoachingSection() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [settings, setSettings] = useState(null);
+
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const data = await sanityFetch({ 
+          query: groupCoachingSettingsQuery,
+          tags: ['groupCoachingSettings']
+        });
+        setSettings(data);
+      } catch (error) {
+        console.error('Error fetching group coaching settings:', error);
+      } 
+    }
+    fetchSettings();
+  }, []);
 
   const handleLearnMore = () => {
     setIsPopupOpen(true);
+  };
+
+  // Get multilingual content
+  const getContent = (field) => {
+    if (!settings) return '';
+    if (language === 'fr' && settings[`${field}Fr`]) {
+      return settings[`${field}Fr`];
+    }
+    if (language === 'ar' && settings[`${field}Ar`]) {
+      return settings[`${field}Ar`];
+    }
+    return settings[field];
   };
 
   const benefits = [
@@ -49,6 +81,9 @@ export default function GroupCoachingSection() {
     t.coaching.feature5,
     t.coaching.feature6,
   ];
+
+  // Show/hide enrollment button based on Sanity settings
+  const showEnrollmentButton = settings?.isAcceptingEnrollment !== false;
 
   // Animation variants
   const containerVariants = {
@@ -107,6 +142,7 @@ export default function GroupCoachingSection() {
       x: 0,
     },
   };
+
 
   return (
     <section id="coaching" ref={ref} className="py-24 scroll-mt-16">
@@ -226,7 +262,7 @@ export default function GroupCoachingSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </motion.div>
 
-            {/* Floating Price Card */}
+            {/* Floating Price Card with Sanity Data */}
             <motion.div
               className="absolute -bottom-8 -left-8 bg-[#f7f9fa]/95 backdrop-blur-sm max-w-xs rounded-lg border border-[#e2e5e9] shadow-lg"
               variants={floatingCardVariants}
@@ -241,16 +277,16 @@ export default function GroupCoachingSection() {
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
-                    {t.coaching.weeks}
+                    {getContent('programDurationDisplay') || t.coaching.weeks}
                   </motion.div>
                   <div className="text-sm text-[#6e7b8a] mb-4">
                     {t.coaching.program}
                   </div>
                   <div className="text-lg font-semibold text-[#0f172a]">
-                    {t.coaching.price}
+                    {getContent('priceDisplay') || t.coaching.price}
                   </div>
                   <div className="text-sm text-[#6e7b8a]">
-                    {t.coaching.payment}
+                    {getContent('paymentPlansText') || t.coaching.payment}
                   </div>
                 </div>
               </div>
@@ -277,37 +313,54 @@ export default function GroupCoachingSection() {
               <p className="text-[#6e7b8a] mb-6 leading-relaxed">
                 {t.coaching.readyDesc}
               </p>
-              <div className="space-y-4">
-                <div className="flex justify-center space-x-4 text-sm text-[#6e7b8a]">
-                  <span>{t.coaching.nextCohort}</span>
-                  <span className="text-[#00b66f] font-semibold">
-                    {t.coaching.spotsAvailable}
-                  </span>
+              
+              {showEnrollmentButton ? (
+                <div className="space-y-4">
+                  <div className="flex justify-center space-x-4 text-sm text-[#6e7b8a] flex-wrap gap-2">
+                    <span>
+                      ✓ Next cohort: {getContent('nextCohortDisplay') || 'March 15th'}
+                    </span>
+                    <span className="text-[#00b66f] font-semibold">
+                      ✓ {getContent('spotsDisplay') || 'Only 12 spots available'}
+                    </span>
+                  </div>
+                  <motion.button
+                    onClick={handleLearnMore}
+                    className="bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-8 py-4 text-lg font-semibold rounded-lg inline-flex items-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                    data-testid="group-coaching-cta"
+                  >
+                    <Trophy className="h-5 w-5" />
+                    {t.coaching.reserveButton}
+                  </motion.button>
                 </div>
-                <motion.button
-                  onClick={handleLearnMore}
-                  className="bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-8 py-4 text-lg font-semibold rounded-lg inline-flex items-center gap-2"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  data-testid="group-coaching-cta"
+              ) : (
+                <motion.div
+                  className="bg-[#f5b53f]/10 border border-[#f5b53f]/30 rounded-lg p-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                 >
-                  <Trophy className="h-5 w-5" />
-                  {t.coaching.reserveButton}
-                </motion.button>
-              </div>
+                  <p className="text-[#6e7b8a] font-medium">
+                    Enrollment currently closed. Next cohort opens soon!
+                  </p>
+                </motion.div>
+              )}
             </div>
           </div>
         </motion.div>
       </div>
 
       {/* Enrollment Popup */}
-      <EnrollmentPopup
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
-        type="group-coaching"
-        title="Reserve Your Spot"
-        description="8-week intensive program - Only 12 spots available!"
-      />
+      {showEnrollmentButton && (
+        <EnrollmentPopup
+          isOpen={isPopupOpen}
+          onClose={() => setIsPopupOpen(false)}
+          type="group-coaching"
+          title="Reserve Your Spot"
+          description="8-week intensive program - Only 12 spots available!"
+        />
+      )}
     </section>
   );
 }

@@ -4,17 +4,48 @@ import { Calendar, Users, TrendingUp, Clock, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import EnrollmentPopup from "@/components/EnrollmentPopup";
 
+import { sanityFetch } from "../../sanity/lib/client";
+import { liveTradingSettingsQuery } from "../../sanity/lib/queries";
+
 export default function LiveTradingSection() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const data = await sanityFetch({ 
+          query: liveTradingSettingsQuery,
+          tags: ['liveTradingSettings']
+        });
+        setSettings(data);
+      } catch (error) {
+        console.error('Error fetching live trading settings:', error);
+      } 
+    }
+    fetchSettings();
+  }, []);
 
   const handleJoinGroup = () => {
     setIsPopupOpen(true);
+  };
+
+  // Get multilingual content
+  const getContent = (field) => {
+    if (!settings) return '';
+    if (language === 'fr' && settings[`${field}Fr`]) {
+      return settings[`${field}Fr`];
+    }
+    if (language === 'ar' && settings[`${field}Ar`]) {
+      return settings[`${field}Ar`];
+    }
+    return settings[field];
   };
 
   const benefits = [
@@ -39,6 +70,9 @@ export default function LiveTradingSection() {
       description: t.liveTrading.benefit4Desc,
     },
   ];
+
+  // Show/hide enrollment button based on Sanity settings
+  const showEnrollmentButton = settings?.isAcceptingApplications !== false;
 
   // Animation variants
   const containerVariants = {
@@ -83,6 +117,8 @@ export default function LiveTradingSection() {
       y: 0,
     },
   };
+
+
 
   return (
     <section id="live-trading" ref={ref} className="py-24 scroll-mt-16">
@@ -137,7 +173,7 @@ export default function LiveTradingSection() {
             ))}
           </motion.div>
 
-          {/* Pricing Card */}
+          {/* Pricing Card with Sanity Data */}
           <motion.div
             className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-lg hover:shadow-xl transition-shadow"
             variants={cardVariants}
@@ -168,61 +204,81 @@ export default function LiveTradingSection() {
                   {t.liveTrading.cardDesc}
                 </p>
 
-                {/* Session Details */}
+                {/* Session Details from Sanity */}
                 <motion.div
                   className="space-y-4 mb-8"
                   variants={containerVariants}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                 >
-                  {[
-                    {
-                      label: t.liveTrading.sessionDays,
-                      value: t.liveTrading.tuesdayThursday,
-                    },
-                    {
-                      label: t.liveTrading.time,
-                      value: t.liveTrading.timeSlot,
-                    },
-                    {
-                      label: t.liveTrading.price,
-                      value: t.liveTrading.monthlyPrice,
-                    },
-                  ].map((detail, index) => (
-                    <motion.div
-                      key={index}
-                      className="flex justify-between items-center p-3 bg-[#f8f9fb]/50 rounded-lg hover:bg-[#f8f9fb] transition-colors"
-                      variants={detailVariants}
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <span className="font-medium">{detail.label}</span>
-                      <span className="text-[#00b66f] font-semibold">
-                        {detail.value}
-                      </span>
-                    </motion.div>
-                  ))}
+                  <motion.div
+                    className="flex justify-between items-center p-3 bg-[#f8f9fb]/50 rounded-lg hover:bg-[#f8f9fb] transition-colors"
+                    variants={detailVariants}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <span className="font-medium">{t.liveTrading.sessionDays}</span>
+                    <span className="text-[#00b66f] font-semibold">
+                      {getContent('sessionDaysDisplay') || t.liveTrading.tuesdayThursday}
+                    </span>
+                  </motion.div>
+
+                  <motion.div
+                    className="flex justify-between items-center p-3 bg-[#f8f9fb]/50 rounded-lg hover:bg-[#f8f9fb] transition-colors"
+                    variants={detailVariants}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <span className="font-medium">{t.liveTrading.time}</span>
+                    <span className="text-[#00b66f] font-semibold">
+                      {getContent('timeDisplay') || t.liveTrading.timeSlot}
+                    </span>
+                  </motion.div>
+
+                  <motion.div
+                    className="flex justify-between items-center p-3 bg-[#f8f9fb]/50 rounded-lg hover:bg-[#f8f9fb] transition-colors"
+                    variants={detailVariants}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <span className="font-medium">{t.liveTrading.price}</span>
+                    <span className="text-[#00b66f] font-semibold">
+                      {getContent('priceDisplay') || t.liveTrading.monthlyPrice}
+                    </span>
+                  </motion.div>
                 </motion.div>
 
-                {/* CTA Button */}
-                <motion.button
-                  onClick={handleJoinGroup}
-                  className="w-full bg-[#00b66f] hover:bg-[#00b66f]/90 text-white py-4 text-lg font-semibold rounded-lg inline-flex items-center justify-center gap-2 group"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                  data-testid="join-live-trading"
-                >
-                  <Zap className="h-5 w-5 group-hover:rotate-12 transition-transform" />
-                  {t.liveTrading.joinButton}
-                </motion.button>
+                {/* CTA Button - conditionally shown */}
+                {showEnrollmentButton ? (
+                  <>
+                    <motion.button
+                      onClick={handleJoinGroup}
+                      className="w-full bg-[#00b66f] hover:bg-[#00b66f]/90 text-white py-4 text-lg font-semibold rounded-lg inline-flex items-center justify-center gap-2 group"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.98 }}
+                      data-testid="join-live-trading"
+                    >
+                      <Zap className="h-5 w-5 group-hover:rotate-12 transition-transform" />
+                      {t.liveTrading.joinButton}
+                    </motion.button>
 
-                <motion.p
-                  className="text-sm text-[#6e7b8a] mt-4"
-                  initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ delay: 0.8 }}
-                >
-                  {t.liveTrading.disclaimer}
-                </motion.p>
+                    <motion.p
+                      className="text-sm text-[#6e7b8a] mt-4"
+                      initial={{ opacity: 0 }}
+                      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                      transition={{ delay: 0.8 }}
+                    >
+                      {t.liveTrading.disclaimer}
+                    </motion.p>
+                  </>
+                ) : (
+                  <motion.div
+                    className="bg-[#f5b53f]/10 border border-[#f5b53f]/30 rounded-lg p-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <p className="text-[#6e7b8a] font-medium">
+                      Applications currently closed. Check back soon!
+                    </p>
+                  </motion.div>
+                )}
               </div>
             </div>
           </motion.div>
@@ -230,13 +286,15 @@ export default function LiveTradingSection() {
       </div>
 
       {/* Enrollment Popup */}
-      <EnrollmentPopup
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
-        type="live-trading"
-        title="Join Live Trading Group"
-        description="Limited to 20 participants - Apply now!"
-      />
+      {showEnrollmentButton && (
+        <EnrollmentPopup
+          isOpen={isPopupOpen}
+          onClose={() => setIsPopupOpen(false)}
+          type="live-trading"
+          title="Join Live Trading Group"
+          description="Limited to 20 participants - Apply now!"
+        />
+      )}
     </section>
   );
 }

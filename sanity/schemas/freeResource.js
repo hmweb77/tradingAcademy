@@ -28,20 +28,7 @@ export default defineType({
       validation: (Rule) => Rule.required(),
       description: 'How the page count appears (e.g., "50 pages", "25 pages")',
     }),
-    defineField({
-      name: 'icon',
-      title: 'Icon',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Trending Up', value: 'trendingUp' },
-          { title: 'Shield', value: 'shield' },
-          { title: 'Book Open', value: 'bookOpen' },
-          { title: 'File Text', value: 'fileText' },
-        ],
-      },
-      validation: (Rule) => Rule.required(),
-    }),
+   
     defineField({
       name: 'image',
       title: 'Resource Image',
@@ -57,8 +44,8 @@ export default defineType({
       title: 'Features (English)',
       type: 'array',
       of: [{ type: 'string' }],
-      validation: (Rule) => Rule.required().min(4).max(4),
-      description: 'Add exactly 4 features for this resource',
+      validation: (Rule) => Rule.required(),
+      description: 'Add features for this resource (recommanded 4)',
     }),
     defineField({
       name: 'pdfFile',

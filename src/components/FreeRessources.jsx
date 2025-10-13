@@ -1,12 +1,17 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { ChevronLeft, ChevronRight, Download, FileText, TrendingUp, Shield, BookOpen, X, CheckCircle2 } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Download, TrendingUp, Shield, BookOpen, FileText, X, CheckCircle2, Loader2 } from "lucide-react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 
+import { sanityFetch } from "../../sanity/lib/client";
+import { freeResourcesQuery } from "../../sanity/lib/queries";
+import Image from "next/image";
+
+
 export default function FreeResourcesSection() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -15,71 +20,47 @@ export default function FreeResourcesSection() {
   const [selectedResource, setSelectedResource] = useState(null);
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [resources, setResources] = useState([]);
 
-  const resources = [
-    {
-      id: 1,
-      icon: TrendingUp,
-      title: t.resources.resource1Title,
-      description: t.resources.resource1Desc,
-      pages: `50 ${t.resources.pages}`,
-      image: "/api/placeholder/400/250",
-      features: [
-        t.resources.resource1Feature1,
-        t.resources.resource1Feature2,
-        t.resources.resource1Feature3,
-        t.resources.resource1Feature4,
-      ],
-    },
-    {
-      id: 2,
-      icon: Shield,
-      title: t.resources.resource2Title,
-      description: t.resources.resource2Desc,
-      pages: `25 ${t.resources.pages}`,
-      image: "/api/placeholder/400/250",
-      features: [
-        t.resources.resource2Feature1,
-        t.resources.resource2Feature2,
-        t.resources.resource2Feature3,
-        t.resources.resource2Feature4,
-      ],
-    },
-    {
-      id: 3,
-      icon: BookOpen,
-      title: t.resources.resource3Title,
-      description: t.resources.resource3Desc,
-      pages: `15 ${t.resources.pages}`,
-      image: "/api/placeholder/400/250",
-      features: [
-        t.resources.resource3Feature1,
-        t.resources.resource3Feature2,
-        t.resources.resource3Feature3,
-        t.resources.resource3Feature4,
-      ],
-    },
-    {
-      id: 4,
-      icon: FileText,
-      title: t.resources.resource4Title,
-      description: t.resources.resource4Desc,
-      pages: `12 ${t.resources.pages}`,
-      image: "/api/placeholder/400/250",
-      features: [
-        t.resources.resource4Feature1,
-        t.resources.resource4Feature2,
-        t.resources.resource4Feature3,
-        t.resources.resource4Feature4,
-      ],
-    },
-  ];
+  const [direction, setDirection] = useState(0);
+
+  // Fetch resources from Sanity
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const data = await sanityFetch({ 
+          query: freeResourcesQuery,
+          tags: ['freeResource']
+        });
+        setResources(data || []);
+      } catch (error) {
+        console.error('Error fetching free resources:', error);
+      } 
+    }
+    fetchResources();
+  }, []);
+
+  // Get multilingual content for a resource
+  const getContent = (resource, field) => {
+    if (!resource) return '';
+    if (language === 'fr' && resource[`${field}Fr`]) {
+      return resource[`${field}Fr`];
+    }
+    if (language === 'ar' && resource[`${field}Ar`]) {
+      return resource[`${field}Ar`];
+    }
+    return resource[field];
+  };
 
   const nextSlide = () => {
+    setDirection(1);
     setCurrentSlide((prev) => (prev + 1) % resources.length);
   };
 
   const prevSlide = () => {
+    setDirection(-1);
     setCurrentSlide((prev) => (prev - 1 + resources.length) % resources.length);
   };
 
@@ -88,13 +69,47 @@ export default function FreeResourcesSection() {
     setIsPopupOpen(true);
     setFormData({ name: "", email: "" });
     setIsSubmitted(false);
+    setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Download requested for ${selectedResource.title}:`, formData);
-    setIsSubmitted(true);
-    // TODO: Implement resource download functionality
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/free-resources', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          resourceId: selectedResource._id,
+          resourceTitle: getContent(selectedResource, 'title')
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit form');
+      }
+
+      setIsSubmitted(true);
+      
+      // Reset after 5 seconds
+      setTimeout(() => {
+        closePopup();
+      }, 5000);
+
+    } catch (err) {
+      console.error('Form submission error:', err);
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const closePopup = () => {
@@ -102,6 +117,7 @@ export default function FreeResourcesSection() {
     setSelectedResource(null);
     setFormData({ name: "", email: "" });
     setIsSubmitted(false);
+    setError('');
   };
 
   // Animation variants
@@ -132,17 +148,22 @@ export default function FreeResourcesSection() {
     }),
   };
 
-  const [direction, setDirection] = useState(0);
 
-  const handleNext = () => {
-    setDirection(1);
-    nextSlide();
-  };
 
-  const handlePrev = () => {
-    setDirection(-1);
-    prevSlide();
-  };
+  if (resources.length === 0) {
+    return (
+      <section id="resources" className="py-24 bg-[#f8f9fb]/30 scroll-mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-[#6e7b8a]">No resources available at the moment.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const currentResource = resources[currentSlide];
+
 
   return (
     <section id="resources" ref={ref} className="py-24 bg-[#f8f9fb]/30 scroll-mt-16">
@@ -187,28 +208,19 @@ export default function FreeResourcesSection() {
                       {/* Resource Info */}
                       <div className="space-y-6">
                         <div className="flex items-center space-x-4">
-                          <motion.div
-                            className="w-12 h-12 bg-[#00b66f]/10 rounded-lg flex items-center justify-center"
-                            whileHover={{ rotate: 360, scale: 1.1 }}
-                            transition={{ duration: 0.6 }}
-                          >
-                            {(() => {
-                              const Icon = resources[currentSlide].icon;
-                              return <Icon className="h-6 w-6 text-[#00b66f]" />;
-                            })()}
-                          </motion.div>
+                         
                           <div>
                             <h3 className="text-2xl font-bold text-[#0f172a]">
-                              {resources[currentSlide].title}
+                              {getContent(currentResource, 'title')}
                             </h3>
                             <span className="text-sm text-[#00b66f] font-medium bg-[#00b66f]/10 px-2 py-1 rounded">
-                              {resources[currentSlide].pages}
+                              {getContent(currentResource, 'pagesDisplay')}
                             </span>
                           </div>
                         </div>
 
                         <p className="text-[#6e7b8a] leading-relaxed text-lg">
-                          {resources[currentSlide].description}
+                          {getContent(currentResource, 'description')}
                         </p>
 
                         <div className="space-y-3">
@@ -216,7 +228,7 @@ export default function FreeResourcesSection() {
                             {t.resources.includedTitle}
                           </h4>
                           <ul className="space-y-2">
-                            {resources[currentSlide].features.map((feature, index) => (
+                            {(getContent(currentResource, 'features') || currentResource.features || []).map((feature, index) => (
                               <motion.li
                                 key={index}
                                 className="flex items-center space-x-3 group"
@@ -239,11 +251,11 @@ export default function FreeResourcesSection() {
                         </div>
 
                         <motion.button
-                          onClick={() => handleGetResource(resources[currentSlide])}
+                          onClick={() => handleGetResource(currentResource)}
                           className="bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-8 py-4 text-lg font-semibold rounded-lg inline-flex items-center gap-2 group"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.98 }}
-                          data-testid={`get-resource-${resources[currentSlide].id}`}
+                          data-testid={`get-resource-${currentResource._id}`}
                         >
                           <Download className="h-5 w-5 group-hover:scale-110 transition-transform" />
                           {t.resources.getButton}
@@ -252,28 +264,34 @@ export default function FreeResourcesSection() {
 
                       {/* Resource Preview */}
                       <div className="flex items-center justify-center">
-                        <motion.div
-                          className="bg-gradient-to-br from-[#00b66f]/10 to-[#00b66f]/5 rounded-lg p-8 w-full h-64 flex items-center justify-center"
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <div className="text-center">
-                            <motion.div
-                              animate={{ y: [0, -10, 0] }}
-                              transition={{ duration: 2, repeat: Infinity }}
-                            >
-                              {(() => {
-                                const Icon = resources[currentSlide].icon;
-                                return <Icon className="h-16 w-16 text-[#00b66f] mx-auto mb-4" />;
-                              })()}
-                            </motion.div>
-                            <div className="text-sm text-[#6e7b8a]">
-                              {t.resources.preview}
+                        {currentResource.imageUrl ? (
+                          <motion.div
+                            className="relative w-full h-64 rounded-lg overflow-hidden"
+                            whileHover={{ scale: 1.02 }}
+                          >
+                            <Image
+                              src={currentResource.imageUrl}
+                              alt={getContent(currentResource, 'title')}
+                              fill
+                              className="object-cover"
+                            />
+                          </motion.div>
+                        ) : (
+                          <motion.div
+                            className="bg-gradient-to-br from-[#00b66f]/10 to-[#00b66f]/5 rounded-lg p-8 w-full h-64 flex items-center justify-center"
+                            whileHover={{ scale: 1.02 }}
+                          >
+                            <div className="text-center">
+                            
+                              <div className="text-sm text-[#6e7b8a]">
+                                {t.resources.preview}
+                              </div>
+                              <div className="font-semibold text-[#0f172a]">
+                                {getContent(currentResource, 'title')}
+                              </div>
                             </div>
-                            <div className="font-semibold text-[#0f172a]">
-                              {resources[currentSlide].title}
-                            </div>
-                          </div>
-                        </motion.div>
+                          </motion.div>
+                        )}
                       </div>
                     </div>
                   </motion.div>
@@ -285,7 +303,7 @@ export default function FreeResourcesSection() {
           {/* Navigation Buttons */}
           <div className="flex justify-center items-center gap-4 mt-8">
             <motion.button
-              onClick={handlePrev}
+              onClick={prevSlide}
               className="bg-[#ffffff]/90 backdrop-blur-sm border border-[#e2e5e9] rounded-lg p-2 hover:bg-[#00b66f]/10 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -314,7 +332,7 @@ export default function FreeResourcesSection() {
             </div>
 
             <motion.button
-              onClick={handleNext}
+              onClick={nextSlide}
               className="bg-[#ffffff]/90 backdrop-blur-sm border border-[#e2e5e9] rounded-lg p-2 hover:bg-[#00b66f]/10 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -332,7 +350,7 @@ export default function FreeResourcesSection() {
           <>
             {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 bg-[#ffffff]/80 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -364,12 +382,9 @@ export default function FreeResourcesSection() {
                 {/* Header */}
                 <div className="flex items-center space-x-3 mb-6">
                   {selectedResource && (
-                    <>
-                      <selectedResource.icon className="h-6 w-6 text-[#00b66f]" />
                       <h3 className="text-xl font-bold">
-                        {t.resources.downloadTitle} {selectedResource.title}
+                        {t.resources.downloadTitle} {getContent(selectedResource, 'title')}
                       </h3>
-                    </>
                   )}
                 </div>
 
@@ -389,26 +404,28 @@ export default function FreeResourcesSection() {
                     <h3 className="text-xl font-bold text-[#0f172a] mb-4">
                       {t.resources.checkEmail}
                     </h3>
-                    <p className="text-[#6e7b8a] mb-6">
-                      {t.resources.emailSent} "{selectedResource?.title}".{" "}
+                    <p className="text-[#6e7b8a] mb-2">
+                      {t.resources.emailSent} "{getContent(selectedResource, 'title')}".{" "}
                       {t.resources.checkInbox}
                     </p>
-                    <motion.button
-                      onClick={closePopup}
-                      className="w-full bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-4 py-2 rounded-lg font-medium"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      {t.resources.closeButton}
-                    </motion.button>
                   </motion.div>
                 ) : (
                   <motion.form
                     onSubmit={handleSubmit}
                     className="space-y-6 py-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                   >
+                    {error && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+                      >
+                        {error}
+                      </motion.div>
+                    )}
+
                     <div className="text-center mb-6">
                       <p className="text-[#6e7b8a]">
                         {t.resources.downloadDesc}
@@ -428,7 +445,8 @@ export default function FreeResourcesSection() {
                         }
                         placeholder={t.resources.fullName}
                         required
-                        className="w-full px-4 py-2 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff]"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-2 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] disabled:opacity-50"
                         data-testid="popup-input-name"
                       />
                     </div>
@@ -446,19 +464,28 @@ export default function FreeResourcesSection() {
                         }
                         placeholder={t.resources.emailAddress}
                         required
-                        className="w-full px-4 py-2 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff]"
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-2 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] disabled:opacity-50"
                         data-testid="popup-input-email"
                       />
                     </div>
 
                     <motion.button
                       type="submit"
-                      className="w-full bg-[#00b66f] hover:bg-[#00b66f]/90 text-white py-3 text-lg font-semibold rounded-lg"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      disabled={isSubmitting}
+                      className="w-full bg-[#00b66f] hover:bg-[#00b66f]/90 text-white py-3 text-lg font-semibold rounded-lg disabled:opacity-50 flex items-center justify-center gap-2"
+                      whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                      whileTap={!isSubmitting ? { scale: 0.98 } : {}}
                       data-testid="popup-submit"
                     >
-                      {t.resources.receiveButton}
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        t.resources.receiveButton
+                      )}
                     </motion.button>
 
                     <p className="text-xs text-[#6e7b8a] text-center">
