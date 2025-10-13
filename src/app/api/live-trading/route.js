@@ -1,0 +1,132 @@
+import { NextResponse } from 'next/server';
+
+// This API route handles Live Trading group enrollment requests
+// It sends an email notification using Brevo API
+
+export async function POST(request) {
+  try {
+    // Parse the incoming form data
+    const body = await request.json();
+    const { name, email, phone, goal } = body;
+
+    // Validate required fields
+    if (!name || !email || !goal) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    // Prepare email content for Brevo
+    const emailData = {
+      sender: {
+        name: "Ten Percent Academy",
+        email: "contact@hmwebs.com" // Replace with your verified sender email
+      },
+      to: [
+        {
+          email: "contact@hmwebs.com", // Replace with your email
+          name: "Ten Percent Academy Team"
+        }
+      ],
+      subject: `New Live Trading Group Request from ${name}`,
+      htmlContent: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background-color: #00b66f; color: white; padding: 20px; text-align: center; }
+            .content { background-color: #f7f9fa; padding: 30px; border: 1px solid #e2e5e9; }
+            .field { margin-bottom: 20px; }
+            .label { font-weight: bold; color: #0f172a; }
+            .value { margin-top: 5px; padding: 10px; background-color: white; border-left: 3px solid #00b66f; }
+            .badge { display: inline-block; background-color: #00b66f; color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; margin-top: 10px; }
+            .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e5e9; color: #6e7b8a; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>📈 New Live Trading Group Request</h1>
+            </div>
+            <div class="content">
+              <p>You have received a new request to join the Live Trading Group:</p>
+              
+              <div class="field">
+                <div class="label">👤 Name:</div>
+                <div class="value">${name}</div>
+              </div>
+              
+              <div class="field">
+                <div class="label">📧 Email:</div>
+                <div class="value"><a href="mailto:${email}">${email}</a></div>
+              </div>
+              
+              ${phone ? `
+              <div class="field">
+                <div class="label">📱 Phone:</div>
+                <div class="value">${phone}</div>
+              </div>
+              ` : ''}
+              
+              <div class="field">
+                <div class="label">🎯 Goal for Joining:</div>
+                <div class="value">${goal}</div>
+              </div>
+              
+              <div style="background-color: #e6f7f0; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <p style="margin: 0; color: #0f172a;"><strong>Program Details:</strong></p>
+                <p style="margin: 10px 0 0 0; color: #6e7b8a;">
+                  • Sessions: Tuesday & Thursday, 9:30 AM - 11:30 AM EST<br>
+                  • Monthly Price: $100<br>
+                  • Group Size: Limited to 20 participants
+                </p>
+              </div>
+              
+              <div class="footer">
+                <p>Please review the application and respond within 24 hours.</p>
+                <p><strong>Ten Percent Academy - Live Trading Group</strong></p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+    };
+
+    // Send email using Brevo API
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': process.env.BREVO_API_KEY,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(emailData)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Brevo API Error:', errorData);
+      throw new Error('Failed to send email');
+    }
+
+    const result = await response.json();
+
+    // Return success response
+    return NextResponse.json({
+      success: true,
+      message: 'Live trading group request submitted successfully',
+      messageId: result.messageId
+    });
+
+  } catch (error) {
+    console.error('Live Trading API Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to submit live trading request' },
+      { status: 500 }
+    );
+  }
+}

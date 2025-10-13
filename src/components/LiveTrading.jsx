@@ -4,16 +4,17 @@ import { Calendar, Users, TrendingUp, Clock, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import EnrollmentPopup from "@/components/EnrollmentPopup";
 
 export default function LiveTradingSection() {
   const { t } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleJoinGroup = () => {
-    console.log("Join live trading group triggered");
-    // TODO: Implement join group functionality
+    setIsPopupOpen(true);
   };
 
   const benefits = [
@@ -227,6 +228,15 @@ export default function LiveTradingSection() {
           </motion.div>
         </div>
       </div>
+
+      {/* Enrollment Popup */}
+      <EnrollmentPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        type="live-trading"
+        title="Join Live Trading Group"
+        description="Limited to 20 participants - Apply now!"
+      />
     </section>
   );
 }

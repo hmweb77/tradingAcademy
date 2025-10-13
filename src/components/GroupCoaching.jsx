@@ -4,17 +4,18 @@ import { Users, MessageSquare, Trophy, BookOpen, CheckCircle, Sparkles } from "l
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
+import EnrollmentPopup from "@/components/EnrollmentPopup";
 
 export default function GroupCoachingSection() {
   const { t } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleLearnMore = () => {
-    console.log("Learn more about group coaching triggered");
-    // TODO: Implement learn more functionality
+    setIsPopupOpen(true);
   };
 
   const benefits = [
@@ -298,6 +299,15 @@ export default function GroupCoachingSection() {
           </div>
         </motion.div>
       </div>
+
+      {/* Enrollment Popup */}
+      <EnrollmentPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        type="group-coaching"
+        title="Reserve Your Spot"
+        description="8-week intensive program - Only 12 spots available!"
+      />
     </section>
   );
 }

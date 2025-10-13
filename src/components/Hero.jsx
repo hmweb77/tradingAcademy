@@ -10,7 +10,7 @@ export default function HeroSection() {
 
   const handleBookCall = () => {
     console.log("Book call triggered");
-    const element = document.getElementById("coaching");
+    const element = document.getElementById("discovery");
     if (element) {
       const navbarHeight = 64;
       const elementPosition = element.getBoundingClientRect().top;
