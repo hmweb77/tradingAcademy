@@ -192,10 +192,10 @@ export default function Footer() {
                   },
                   {
                     icon: Phone,
-                    text: "+1 (555) 123-4567",
-                    href: "tel:+15551234567",
+                    text: "+212 724687666",
+                    href: "tel:+212 724687666",
                   },
-                  { icon: MapPin, text: "New York, NY", href: null },
+                  { icon: MapPin, text: "Casablanca", href: null },
                 ].map((contact, index) => (
                   <motion.div
                     key={index}

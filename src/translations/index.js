@@ -9,9 +9,9 @@ export const translations = {
         discovery:"Discovery Call"
       },
       hero: {
-        title: "Be Part of the",
-        winners: "10% Winners",
-        subtitle: "Master professional trading strategies through live sessions, expert coaching, and proven methodologies that separate winners from the crowd.",
+        title: "Master the Market Reprogram Your Mind",
+        winners: "Trade Like the 10%.",
+        subtitle: "Become part of the elite 10% who win consistently. Learn professional trading strategies, master psychology, and rewire your habits to trade with confidence and precision.",
         bookCall: "Book 1h Discovery Call",
         downloadResources: "Download Free Resources",
         stat1: "Successful Students",
@@ -38,6 +38,53 @@ export const translations = {
         pillar3: "Emotional Control",
         pillar3Desc: "Developing the psychology of successful traders"
       },
+      testimonials: {
+        badge: "Real Messages from Real Traders",
+        title: "Success Stories",
+        subtitle: "Authentic messages from our students showing their transformation from struggling traders to consistent winners.",
+        
+        // WhatsApp/Message style testimonials
+        message1Name: "Ahmad Hassan",
+        message1Text: "Professor, honestly, if you want to learn trading the right way from both technical and psychological perspectives, I advise you with our dear professor. I never regret a single dirham or time. Most importantly, he gives you information sincerely and honestly, remains your individual effort to achieve the desired results, and to be persistent and serious in work. I recommend Professor Mohamed if you want the right source. Thank you brother Mohamed, success for everyone.",
+        
+        message2Name: "Sarah Mitchell",
+        message2Text: "I can't believe the transformation! 6 months ago I was losing money consistently, now I'm profitable every single month. The risk management techniques alone were worth 10x the investment. The live sessions changed everything for me. Thank you for your patience and dedication!",
+        
+        message3Name: "Carlos Rodriguez",
+        message3Text: "This is not just another trading course. This is a complete mindset shift. I went from taking 10+ trades a day and losing, to taking 2-3 quality trades and winning consistently. My account grew 300% in the last 4 months. The psychological training was the game changer!",
+        
+        adminReply: "Thank you for your trust! 🙏",
+        
+        // Additional traditional testimonials
+        additional1Name: "Jennifer Chen",
+        additional1Role: "Software Engineer → Full-time Trader",
+        additional1Text: "The structured approach and continuous support made all the difference. I was able to quit my job after 8 months and now trade full-time.",
+        
+        additional2Name: "Michael Thompson",
+        additional2Role: "Business Owner",
+        additional2Text: "Finally, a program that delivers on its promises. The combination of live trading and group coaching is unbeatable. My portfolio is up 180% this year.",
+        
+        stat1: "Students Trained",
+        stat2: "Success Rate",
+        stat3: "Student Profits",
+        stat4: "Average Rating"
+      },
+      
+      pillars: {
+        badge: "Transform Your Trading Forever",
+        title: "Main Pillars of the Program",
+        subtitle: "Discover the comprehensive framework that has transformed hundreds of struggling traders into consistent winners in the markets.",
+        pillar1: "Uncover the biggest lies and misconceptions about trading",
+        pillar2: "Destroy false beliefs and build a new professional mindset",
+        pillar3: "Reprogram the way you think about the market and risk",
+        pillar4: "Learn how to become a disciplined and consistent trader",
+        pillar5: "Discover how to set and achieve sustainable, realistic goals",
+        pillar6: "Adopt the mindset of the top 10% of traders who win consistently",
+        pillar7: "Learn the one skill that changes everything — Risk Management — taught in a way you will never find anywhere else",
+        pillar8: "See real examples of students who used to over-trade (10 trades a day) and now trade calmly, with focus and consistency",
+        plus: "Plus, many more secrets that will transform not only your trading — but your entire life."
+      },
+      
       liveTrading: {
         title: "Live Trading Sessions",
         subtitle: "Experience the markets like never before. Join our exclusive live trading group where theory meets practice, and learn from real trades in real-time.",
@@ -238,6 +285,20 @@ export const translations = {
         pillar2Desc: "Protéger le capital grâce à un dimensionnement de position discipliné",
         pillar3: "Contrôle Émotionnel",
         pillar3Desc: "Développer la psychologie des traders à succès"
+      },
+      pillars: {
+        badge: "Transformez Votre Trading Pour Toujours",
+        title: "Piliers Principaux du Programme",
+        subtitle: "Découvrez le cadre complet qui a transformé des centaines de traders en difficulté en gagnants constants sur les marchés.",
+        pillar1: "Découvrez les plus grands mensonges et idées fausses sur le trading",
+        pillar2: "Détruisez les fausses croyances et construisez un nouvel état d'esprit professionnel",
+        pillar3: "Reprogrammez votre façon de penser le marché et le risque",
+        pillar4: "Apprenez à devenir un trader discipliné et constant",
+        pillar5: "Découvrez comment définir et atteindre des objectifs durables et réalistes",
+        pillar6: "Adoptez l'état d'esprit des 10% de traders qui gagnent constamment",
+        pillar7: "Apprenez la compétence qui change tout — la Gestion des Risques — enseignée d'une manière que vous ne trouverez nulle part ailleurs",
+        pillar8: "Voyez de vrais exemples d'étudiants qui sur-tradaient (10 trades par jour) et qui tradent maintenant calmement, avec focus et constance",
+        plus: "Plus, de nombreux autres secrets qui transformeront non seulement votre trading — mais toute votre vie."
       },
       liveTrading: {
         title: "Sessions de Trading en Direct",
@@ -440,6 +501,49 @@ export const translations = {
         pillar3: "قوة نفسية لا تُهزم",
         pillar3Desc: "عقلية المتداولين الناجحين والأثرياء"
       },
+      testimonials: {
+        badge: "Vrais Messages de Vrais Traders",
+        title: "Histoires de Réussite",
+        subtitle: "Messages authentiques de nos étudiants montrant leur transformation de traders en difficulté à gagnants constants.",
+        
+        message1Name: "Ahmad Hassan",
+        message1Text: "Professeur, honnêtement, si vous voulez apprendre le trading de la bonne manière, tant du point de vue technique que psychologique, je vous conseille notre cher professeur. Je ne regrette jamais un seul dirham ou temps. Plus important encore, il vous donne des informations sincèrement et honnêtement, reste votre effort individuel pour atteindre les résultats souhaités.",
+        
+        message2Name: "Sarah Mitchell",
+        message2Text: "Je ne peux pas croire la transformation! Il y a 6 mois, je perdais de l'argent constamment, maintenant je suis rentable chaque mois. Les techniques de gestion des risques valaient à elles seules 10x l'investissement. Les sessions en direct ont tout changé pour moi!",
+        
+        message3Name: "Carlos Rodriguez",
+        message3Text: "Ce n'est pas juste un autre cours de trading. C'est un changement complet de mentalité. Je suis passé de 10+ trades par jour en perdant, à 2-3 trades de qualité en gagnant constamment. Mon compte a augmenté de 300% ces 4 derniers mois!",
+        
+        adminReply: "Merci pour votre confiance! 🙏",
+        
+        additional1Name: "Jennifer Chen",
+        additional1Role: "Ingénieure → Trader à Temps Plein",
+        additional1Text: "L'approche structurée et le soutien continu ont fait toute la différence. J'ai pu quitter mon emploi après 8 mois et maintenant je trade à temps plein.",
+        
+        additional2Name: "Michael Thompson",
+        additional2Role: "Chef d'Entreprise",
+        additional2Text: "Enfin, un programme qui tient ses promesses. La combinaison du trading en direct et du coaching de groupe est imbattable. Mon portefeuille a augmenté de 180% cette année.",
+        
+        stat1: "Étudiants Formés",
+        stat2: "Taux de Réussite",
+        stat3: "Profits des Étudiants",
+        stat4: "Note Moyenne"
+      },
+      pillars: {
+        badge: "غيّر تداولك إلى الأبد",
+        title: "الأركان الأساسية للبرنامج",
+        subtitle: "اكتشف الإطار الشامل الذي حوّل مئات المتداولين الخاسرين إلى رابحين ثابتين في الأسواق.",
+        pillar1: "اكشف أكبر الأكاذيب والمفاهيم الخاطئة حول التداول",
+        pillar2: "دمّر المعتقدات الخاطئة وابنِ عقلية احترافية جديدة",
+        pillar3: "أعد برمجة طريقة تفكيرك حول السوق والمخاطر",
+        pillar4: "تعلم كيف تصبح متداولاً منضبطاً وثابتاً",
+        pillar5: "اكتشف كيفية وضع وتحقيق أهداف مستدامة وواقعية",
+        pillar6: "تبنّى عقلية أفضل 10% من المتداولين الذين يربحون باستمرار",
+        pillar7: "تعلم المهارة الوحيدة التي تغير كل شيء — إدارة المخاطر — بطريقة لن تجدها في أي مكان آخر",
+        pillar8: "شاهد أمثلة حقيقية لطلاب كانوا يفرطون في التداول (10 صفقات يومياً) والآن يتداولون بهدوء وتركيز وثبات",
+        plus: "بالإضافة إلى العديد من الأسرار الأخرى التي ستحول ليس فقط تداولك — بل حياتك بأكملها."
+      },
       liveTrading: {
         title: "تداول مباشر مع المحترفين",
         subtitle: "شاهد الأرباح تتحقق أمام عينيك! انضم لمجموعة النخبة حيث تتحول النظريات إلى صفقات رابحة والتعليم إلى دخل حقيقي.",
@@ -561,6 +665,35 @@ export const translations = {
         emailSent: "أرسلنا لك رابط التحميل لـ",
         checkInbox: "تفقّد صندوق الوارد (وأيضاً الرسائل المزعجة).",
         closeButton: "إغلاق"
+      },
+      testimonials: {
+        badge: "رسائل حقيقية من متداولين حقيقيين",
+        title: "قصص نجاح حقيقية",
+        subtitle: "رسائل أصلية من طلابنا تُظهر تحولهم من متداولين خاسرين إلى رابحين بثبات.",
+        
+        message1Name: "أحمد حسن",
+        message1Text: "شهادة حق، اذا كنت تريد تعلم التداول بالطريقة الصحيحة من الناحية التقنية و النفسية فأنصح بأستاذنا الكريم، لم أندم أبدا على درهم واحد ولا الوقت. والأهم أنه يعطيك المعلومة بصدق واخلاص، يبقى مجهودك الفردي لتحقيق المبتغى، وان تكون محاربا و جادا في العمل. عليك بالاستاذ محمد اذا أردت المصدر الصحيح، شكرا لك أخي محمد، بالتوفيق للجميع.",
+        
+        message2Name: "سارة ميتشل",
+        message2Text: "لا أصدق التحول! قبل 6 أشهر كنت أخسر المال باستمرار، الآن أحقق أرباحاً كل شهر. تقنيات إدارة المخاطر وحدها تستحق 10 أضعاف الاستثمار. الجلسات المباشرة غيرت كل شيء بالنسبة لي!",
+        
+        message3Name: "كارلوس رودريغيز",
+        message3Text: "هذا ليس مجرد دورة تداول أخرى. هذا تغيير كامل في العقلية. انتقلت من 10+ صفقات يومياً بخسائر، إلى 2-3 صفقات عالية الجودة بأرباح ثابتة. نما حسابي 300% في آخر 4 أشهر!",
+        
+        adminReply: "شكراً لثقتكم! 🙏",
+        
+        additional1Name: "جينيفر تشين",
+        additional1Role: "مهندسة برمجيات → متداولة بدوام كامل",
+        additional1Text: "النهج المنظم والدعم المستمر صنع كل الفرق. تمكنت من ترك وظيفتي بعد 8 أشهر والآن أتداول بدوام كامل.",
+        
+        additional2Name: "مايكل طومسون",
+        additional2Role: "صاحب عمل",
+        additional2Text: "أخيراً، برنامج يفي بوعوده. مزيج التداول المباشر والتدريب الجماعي لا يُقهر. محفظتي ارتفعت 180% هذا العام.",
+        
+        stat1: "متداول مدرّب",
+        stat2: "معدل النجاح",
+        stat3: "أرباح الطلاب",
+        stat4: "متوسط التقييم"
       },
       testimonials: {
         title: "قصص نجاح حقيقية",

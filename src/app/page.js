@@ -11,6 +11,7 @@ import TestimonialsSection from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import { useTranslation } from "@/hooks/useTranslation";
 import DiscoveryCallSection from "@/components/DiscoveryCall";
+import ProgramPillarsSection from "@/components/Pillars";
 
 
 export default function Home() {
@@ -25,12 +26,14 @@ export default function Home() {
     <main className="min-h-screen">
    <Navigation/>
       <HeroSection />
+      <ProgramPillarsSection></ProgramPillarsSection>
       <AboutSection />
       <DiscoveryCallSection/>
       <LiveTradingSection />
       <GroupCoachingSection />
       <FreeResourcesSection />
-      <TestimonialsSection />
+      <TestimonialsSection></TestimonialsSection>
+      {/* <TestimonialsSection /> */}
       <Footer />
     </main>
   );
