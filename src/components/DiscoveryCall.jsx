@@ -132,7 +132,7 @@ export default function DiscoveryCallSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-[#0f172a] mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#00b66f] mb-6">
             {t.discovery.title}
           </h2>
           <p className="text-xl text-[#6e7b8a] max-w-3xl mx-auto leading-relaxed">

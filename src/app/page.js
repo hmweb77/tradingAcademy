@@ -7,11 +7,14 @@ import AboutSection from "@/components/About";
 import LiveTradingSection from "@/components/LiveTrading";
 import GroupCoachingSection from "@/components/GroupCoaching";
 import FreeResourcesSection from "@/components/FreeRessources";
-import TestimonialsSection from "@/components/Testimonials";
+
 import Footer from "@/components/Footer";
 import { useTranslation } from "@/hooks/useTranslation";
 import DiscoveryCallSection from "@/components/DiscoveryCall";
 import ProgramPillarsSection from "@/components/Pillars";
+import ComboOfferSection from "@/components/ComboOffer";
+import SignalsSection from "@/components/SignalsSection";
+import TestimonialsSection from "@/components/Testimonialss";
 
 
 export default function Home() {
@@ -27,12 +30,14 @@ export default function Home() {
    <Navigation/>
       <HeroSection />
       <ProgramPillarsSection></ProgramPillarsSection>
-      <AboutSection />
+      {/* <AboutSection /> */}
+      <ComboOfferSection></ComboOfferSection>
       <DiscoveryCallSection/>
       <LiveTradingSection />
       <GroupCoachingSection />
+      <SignalsSection></SignalsSection>
       <FreeResourcesSection />
-      <TestimonialsSection></TestimonialsSection>
+    <TestimonialsSection></TestimonialsSection>
       {/* <TestimonialsSection /> */}
       <Footer />
     </main>

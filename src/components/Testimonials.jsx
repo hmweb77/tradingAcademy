@@ -6,7 +6,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useRef } from "react";
 import Image from "next/image";
 
-export default function TestimonialsSection() {
+export default function TestimonialsSe() {
   const { t, language } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
