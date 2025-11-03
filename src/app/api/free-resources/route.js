@@ -219,7 +219,7 @@ export async function POST(request) {
       },
       to: [
         {
-          email: "contact@hmwebs.com", // Replace with your admin email
+          email: "tenpercentacademy10@gmail.com", // Replace with your admin email
           name: "Ten Percent Academy Team"
         }
       ],
