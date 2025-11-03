@@ -20,6 +20,21 @@ export default function ProgramPillarsSection() {
   const { t } = useTranslation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  
+  const handleBookCall = () => {
+    console.log("Book call triggered");
+    const element = document.getElementById("discovery");
+    if (element) {
+      const navbarHeight = 64;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
 
   // Define pillars with icons and enhanced descriptions
   const pillars = [
@@ -244,28 +259,26 @@ export default function ProgramPillarsSection() {
                       </p>
                     </motion.div>
                   </div>
-                </div>
-
-                {/* Hover Effect Line */}
-                <motion.div
-                  className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#00b66f] to-[#f5b53f] rounded-b-xl"
-                  initial={{ width: 0 }}
-                  whileHover={{ width: "100%" }}
-                  transition={{ duration: 0.3 }}
-                />
+                </div>  
               </div>
             </motion.div>
           ))}
         </motion.div>
+        <motion.div
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+  
+          >
             <motion.button
-              className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-6 py-2 rounded-lg font-lg inline-flex items-center gap-2"
+              onClick={handleBookCall}
+              className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-8 py-4 text-lg font-semibold rounded-lg group inline-flex items-center transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              data-testid="nav-cta"
+              data-testid="hero-book-call"
             >
-              {t.discovery.submitButton}
+              {t.hero.bookCall}
             </motion.button>
-        
+
+            </motion.div>   
       </div>
     </section>
   );

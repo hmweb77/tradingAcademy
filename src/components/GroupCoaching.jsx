@@ -326,9 +326,10 @@ export default function GroupCoachingSection() {
                   </div>
                   <motion.button
                     onClick={handleLearnMore}
-                    className="bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-8 py-4 text-lg font-semibold rounded-lg inline-flex items-center gap-2"
+                    className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-8 py-4 text-lg font-semibold rounded-lg group inline-flex items-center transition-colors"
                     whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileTap={{ scale: 0.95 }}
+                  
                     data-testid="group-coaching-cta"
                   >
                     <Trophy className="h-5 w-5" />
