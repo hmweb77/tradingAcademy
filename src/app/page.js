@@ -29,16 +29,16 @@ export default function Home() {
     <main className="min-h-screen">
    <Navigation/>
       <HeroSection />
-      <ProgramPillarsSection></ProgramPillarsSection>
+      <ProgramPillarsSection/>
       {/* <AboutSection /> */}
-      <ComboOfferSection></ComboOfferSection>
+      <ComboOfferSection/>
       <DiscoveryCallSection/>
       <LiveTradingSection />
       <GroupCoachingSection />
-      <SignalsSection></SignalsSection>
+      <SignalsSection/>
       <FreeResourcesSection />
-    <TestimonialsSection></TestimonialsSection>
-      {/* <TestimonialsSection /> */}
+    <TestimonialsSection/>
+  
       <Footer />
     </main>
   );

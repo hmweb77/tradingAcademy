@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 // This API route handles Discovery Call form submissions
 // It sends an email notification using Brevo API
@@ -14,6 +15,18 @@ export async function POST(request) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
+      );
+    }
+    // 🛡️ RATE LIMITING - Allow max 3 submissions per email per hour
+    const isAllowed = checkRateLimit(email, 3, 3600000);
+    
+    if (!isAllowed) {
+      return NextResponse.json(
+        { 
+          error: 'Too many requests from this email address. Please try again in 1 hour.',
+          rateLimitExceeded: true
+        },
+        { status: 429 }
       );
     }
 

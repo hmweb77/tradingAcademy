@@ -7,11 +7,11 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 /**
  * Reusable Enrollment Popup Component
- * Used for both Live Trading and Group Coaching enrollments
+ * Used for Live Trading, Group Coaching, Combo Package, and Signals enrollments
  * 
  * @param {boolean} isOpen - Controls popup visibility
  * @param {function} onClose - Callback when popup closes
- * @param {string} type - Either 'live-trading' or 'group-coaching'
+ * @param {string} type - Either 'live-trading', 'group-coaching', 'combo', or 'signals'
  * @param {string} title - Popup title
  * @param {string} description - Popup description
  */
@@ -29,10 +29,24 @@ export default function EnrollmentPopup({ isOpen, onClose, type, title, descript
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  // Determine API endpoint based on type
-  const apiEndpoint = type === 'live-trading' 
-    ? '/api/live-trading' 
-    : '/api/group-coaching';
+  // Determine API endpoint based on type - FIXED TO SUPPORT ALL TYPES
+  const getApiEndpoint = () => {
+    switch(type) {
+      case 'live-trading':
+        return '/api/live-trading';
+      case 'group-coaching':
+        return '/api/group-coaching';
+      case 'combo':
+        return '/api/combo';
+      case 'signals':
+        return '/api/signals';
+      default:
+        console.warn(`Unknown enrollment type: ${type}, defaulting to group-coaching`);
+        return '/api/group-coaching';
+    }
+  };
+
+  const apiEndpoint = getApiEndpoint();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,13 +68,11 @@ export default function EnrollmentPopup({ isOpen, onClose, type, title, descript
         throw new Error(result.error || 'Failed to submit form');
       }
 
-      // Show success message
+      // Show success message - NO AUTO-CLOSE
       setIsSubmitted(true);
       
-      // Reset form and close popup after 3 seconds
-      setTimeout(() => {
-        handleClose();
-      }, 3000);
+      // User must manually close the popup
+      // No auto-close timer - this was the issue!
 
     } catch (err) {
       console.error('Form submission error:', err);
@@ -130,7 +142,7 @@ export default function EnrollmentPopup({ isOpen, onClose, type, title, descript
               <div className="p-6">
                 <AnimatePresence mode="wait">
                   {isSubmitted ? (
-                    // Success Message
+                    // Success Message - USER MUST CLOSE MANUALLY
                     <motion.div
                       key="success"
                       initial={{ opacity: 0, scale: 0.9 }}
@@ -146,14 +158,24 @@ export default function EnrollmentPopup({ isOpen, onClose, type, title, descript
                         <CheckCircle2 className="h-10 w-10 text-[#00b66f]" />
                       </motion.div>
                       <h3 className="text-2xl font-bold text-[#0f172a] mb-4">
-                        Thank You!
+                        Thank You, {formData.name}! 🎉
                       </h3>
                       <p className="text-[#6e7b8a] mb-2">
                         Your enrollment request has been submitted successfully.
                       </p>
-                      <p className="text-[#6e7b8a]">
-                        We'll reach out to you soon with next steps.
+                      <p className="text-[#6e7b8a] mb-6">
+                        We'll reach out to you at <strong>{formData.email}</strong> within 24 hours with next steps.
                       </p>
+                      
+                      {/* Manual Close Button */}
+                      <motion.button
+                        onClick={handleClose}
+                        className="bg-[#00b66f] hover:bg-[#00b66f]/90 text-white px-6 py-3 rounded-lg font-semibold"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Close
+                      </motion.button>
                     </motion.div>
                   ) : (
                     // Form
@@ -221,7 +243,7 @@ export default function EnrollmentPopup({ isOpen, onClose, type, title, descript
                           type="tel"
                           value={formData.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}
-                          placeholder="+1 (555) 123-4567"
+                          placeholder="+212 123456789"
                           disabled={isSubmitting}
                           className="w-full px-4 py-3 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] text-[#0f172a] placeholder:text-[#6e7b8a] disabled:opacity-50 disabled:cursor-not-allowed"
                           data-testid="popup-input-phone"

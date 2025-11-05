@@ -102,7 +102,7 @@ export default function FreeResourcesSection() {
       
       setTimeout(() => {
         closePopup();
-      }, 5000);
+      }, 15000);
 
     } catch (err) {
       console.error('Form submission error:', err);

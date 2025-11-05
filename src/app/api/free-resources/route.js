@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { client } from '../../../../sanity/lib/client';
 import { freeResourceByIdQuery } from '../../../../sanity/lib/queries';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 
 // This API route handles Free Resource download requests
@@ -18,6 +19,18 @@ export async function POST(request) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
+      );
+    }
+    // 🛡️ RATE LIMITING - Allow max 5 downloads per email per day
+    const isAllowed = checkRateLimit(email, 5, 86400000);
+    
+    if (!isAllowed) {
+      return NextResponse.json(
+        { 
+          error: 'Too many download requests. Please try again tomorrow.',
+          rateLimitExceeded: true
+        },
+        { status: 429 }
       );
     }
 

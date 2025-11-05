@@ -57,7 +57,7 @@ export default function DiscoveryCallSection() {
           goals: ''
         });
         setIsSubmitted(false);
-      }, 5000);
+      }, 15000);
 
     } catch (err) {
       console.error('Form submission error:', err);
