@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Download, X, CheckCircle2, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, X, CheckCircle2, Loader2, AlertCircle, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { sanityFetch } from "../../sanity/lib/client";
@@ -17,31 +17,37 @@ export default function FreeResourcesSection() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [formData, setFormData] = useState({ name: "", email: "" });
+  const [formErrors, setFormErrors] = useState({});
+  const [formTouched, setFormTouched] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [resources, setResources] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
   const [direction, setDirection] = useState(0);
 
   // Fetch resources from Sanity
   useEffect(() => {
-    async function fetchResources() {
-      try {
-        setIsLoading(true);
-        const data = await sanityFetch({ 
-          query: freeResourcesQuery,
-          tags: ['freeResource']
-        });
-        setResources(data || []);
-      } catch (error) {
-        console.error('Error fetching free resources:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
     fetchResources();
   }, []);
+
+  const fetchResources = async () => {
+    try {
+      setIsLoading(true);
+      setFetchError(null);
+      const data = await sanityFetch({ 
+        query: freeResourcesQuery,
+        tags: ['freeResource']
+      });
+      setResources(data || []);
+    } catch (error) {
+      console.error('Error fetching free resources:', error);
+      setFetchError('Failed to load resources. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Get multilingual content for a resource
   const getContent = (resource, field) => {
@@ -53,6 +59,69 @@ export default function FreeResourcesSection() {
       return resource[`${field}Ar`];
     }
     return resource[field];
+  };
+
+  // Form validation
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validateFormField = (field, value) => {
+    switch(field) {
+      case 'name':
+        if (!value || value.trim().length < 2) {
+          return 'Name must be at least 2 characters';
+        }
+        return '';
+      case 'email':
+        if (!value) {
+          return 'Email is required';
+        }
+        if (!validateEmail(value)) {
+          return 'Please enter a valid email address';
+        }
+        return '';
+      default:
+        return '';
+    }
+  };
+
+  const handleFormInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setError('');
+    
+    if (formTouched[field]) {
+      const fieldError = validateFormField(field, value);
+      setFormErrors(prev => ({
+        ...prev,
+        [field]: fieldError
+      }));
+    }
+  };
+
+  const handleFormBlur = (field) => {
+    setFormTouched(prev => ({ ...prev, [field]: true }));
+    const fieldError = validateFormField(field, formData[field]);
+    setFormErrors(prev => ({
+      ...prev,
+      [field]: fieldError
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    Object.keys(formData).forEach(field => {
+      const fieldError = validateFormField(field, formData[field]);
+      if (fieldError) {
+        newErrors[field] = fieldError;
+      }
+    });
+    
+    setFormErrors(newErrors);
+    setFormTouched({ name: true, email: true });
+    
+    return Object.keys(newErrors).length === 0;
   };
 
   const nextSlide = () => {
@@ -69,12 +138,20 @@ export default function FreeResourcesSection() {
     setSelectedResource(resource);
     setIsPopupOpen(true);
     setFormData({ name: "", email: "" });
+    setFormErrors({});
+    setFormTouched({});
     setIsSubmitted(false);
     setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      setError('Please fix the errors above');
+      return;
+    }
+    
     setIsSubmitting(true);
     setError('');
 
@@ -95,6 +172,9 @@ export default function FreeResourcesSection() {
       const result = await response.json();
 
       if (!response.ok) {
+        if (result.rateLimitExceeded) {
+          throw new Error('⏱️ Too many download requests. You can try again tomorrow. This helps us prevent abuse.');
+        }
         throw new Error(result.error || 'Failed to submit form');
       }
 
@@ -116,6 +196,8 @@ export default function FreeResourcesSection() {
     setIsPopupOpen(false);
     setSelectedResource(null);
     setFormData({ name: "", email: "" });
+    setFormErrors({});
+    setFormTouched({});
     setIsSubmitted(false);
     setError('');
   };
@@ -160,7 +242,7 @@ export default function FreeResourcesSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-[#0f172a] mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#00b66f] mb-6">
             {t.resources.title}
           </h2>
           <p className="text-xl text-[#6e7b8a] max-w-3xl mx-auto leading-relaxed">
@@ -170,21 +252,51 @@ export default function FreeResourcesSection() {
 
         {/* Loading State */}
         {isLoading && (
-          <div className="text-center">
-            <Loader2 className="h-8 w-8 animate-spin mx-auto text-[#00b66f]" />
-            <p className="text-[#6e7b8a] mt-4">Loading resources...</p>
+          <div className="text-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-[#00b66f] mb-4" />
+            <p className="text-[#6e7b8a]">Loading resources...</p>
           </div>
         )}
 
+        {/* Error State */}
+        {fetchError && !isLoading && (
+          <motion.div
+            className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-red-700 font-medium mb-3">{fetchError}</p>
+                <button
+                  onClick={fetchResources}
+                  className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-medium text-sm"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* No Resources State */}
-        {!isLoading && resources.length === 0 && (
-          <div className="text-center">
-            <p className="text-[#6e7b8a]">No resources available at the moment.</p>
+        {!isLoading && !fetchError && resources.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-[#6e7b8a] mb-4">No resources available at the moment.</p>
+            <button
+              onClick={fetchResources}
+              className="inline-flex items-center gap-2 text-[#00b66f] hover:text-[#00b66f]/80 font-medium"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Refresh
+            </button>
           </div>
         )}
 
         {/* Carousel - Only show when there are resources */}
-        {!isLoading && resources.length > 0 && (
+        {!isLoading && !fetchError && resources.length > 0 && (
           <>
             <div className="relative max-w-5xl mx-auto">
               <div className="overflow-hidden rounded-lg">
@@ -253,10 +365,9 @@ export default function FreeResourcesSection() {
 
                             <motion.button
                               onClick={() => handleGetResource(currentResource)}
-                              className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-8 py-4 text-lg font-semibold rounded-lg group inline-flex items-center transition-colors"
+                              className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-8 py-4 text-lg font-semibold rounded-lg group inline-flex items-center gap-2 transition-colors"
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                        
                               data-testid={`get-resource-${currentResource._id}`}
                             >
                               <Download className="h-5 w-5 group-hover:scale-110 transition-transform" />
@@ -309,6 +420,7 @@ export default function FreeResourcesSection() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   data-testid="carousel-prev"
+                  aria-label="Previous resource"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </motion.button>
@@ -328,6 +440,7 @@ export default function FreeResourcesSection() {
                       whileHover={{ scale: 1.3 }}
                       whileTap={{ scale: 0.9 }}
                       data-testid={`carousel-dot-${index}`}
+                      aria-label={`Go to resource ${index + 1}`}
                     />
                   ))}
                 </div>
@@ -338,6 +451,7 @@ export default function FreeResourcesSection() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   data-testid="carousel-next"
+                  aria-label="Next resource"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </motion.button>
@@ -369,7 +483,7 @@ export default function FreeResourcesSection() {
               transition={{ duration: 0.2 }}
             >
               <motion.div
-                className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-xl max-w-md w-full p-6 relative"
+                className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Close Button */}
@@ -378,16 +492,17 @@ export default function FreeResourcesSection() {
                   className="absolute top-4 right-4 p-2 rounded-lg hover:bg-[#00b66f]/10 transition-colors"
                   whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}
+                  aria-label="Close popup"
                 >
                   <X className="h-4 w-4" />
                 </motion.button>
 
                 {/* Header */}
-                <div className="flex items-center space-x-3 mb-6">
+                <div className="flex items-center space-x-3 mb-6 pr-8">
                   {selectedResource && (
-                      <h3 className="text-xl font-bold">
-                        {t.resources.downloadTitle} {getContent(selectedResource, 'title')}
-                      </h3>
+                    <h3 className="text-xl font-bold">
+                      {t.resources.downloadTitle} {getContent(selectedResource, 'title')}
+                    </h3>
                   )}
                 </div>
 
@@ -418,14 +533,16 @@ export default function FreeResourcesSection() {
                     className="space-y-6 py-4"
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
+                    noValidate
                   >
                     {error && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+                        className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-start gap-2"
                       >
-                        {error}
+                        <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                        <span>{error}</span>
                       </motion.div>
                     )}
 
@@ -437,40 +554,66 @@ export default function FreeResourcesSection() {
 
                     <div className="space-y-2">
                       <label htmlFor="popup-name" className="text-sm font-medium">
-                        {t.resources.fullName}
+                        {t.resources.fullName} *
                       </label>
                       <input
                         id="popup-name"
                         type="text"
                         value={formData.name}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, name: e.target.value }))
-                        }
+                        onChange={(e) => handleFormInputChange('name', e.target.value)}
+                        onBlur={() => handleFormBlur('name')}
                         placeholder={t.resources.fullName}
                         required
                         disabled={isSubmitting}
-                        className="w-full px-4 py-2 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] disabled:opacity-50"
+                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-[#ffffff] disabled:opacity-50 transition-colors ${
+                          formErrors.name && formTouched.name
+                            ? 'border-red-300 focus:ring-red-500'
+                            : 'border-[#e2e5e9] focus:ring-[#00b66f]'
+                        }`}
                         data-testid="popup-input-name"
                       />
+                      {formErrors.name && formTouched.name && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-500 text-sm flex items-center gap-1"
+                        >
+                          <AlertCircle className="h-4 w-4" />
+                          {formErrors.name}
+                        </motion.p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
                       <label htmlFor="popup-email" className="text-sm font-medium">
-                        {t.resources.emailAddress}
+                        {t.resources.emailAddress} *
                       </label>
                       <input
                         id="popup-email"
                         type="email"
                         value={formData.email}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, email: e.target.value }))
-                        }
+                        onChange={(e) => handleFormInputChange('email', e.target.value)}
+                        onBlur={() => handleFormBlur('email')}
                         placeholder={t.resources.emailAddress}
                         required
                         disabled={isSubmitting}
-                        className="w-full px-4 py-2 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] disabled:opacity-50"
+                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-[#ffffff] disabled:opacity-50 transition-colors ${
+                          formErrors.email && formTouched.email
+                            ? 'border-red-300 focus:ring-red-500'
+                            : 'border-[#e2e5e9] focus:ring-[#00b66f]'
+                        }`}
                         data-testid="popup-input-email"
                       />
+                      {formErrors.email && formTouched.email && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-500 text-sm flex items-center gap-1"
+                        >
+                          <AlertCircle className="h-4 w-4" />
+                          {formErrors.email}
+                        </motion.p>
+                      )}
                     </div>
 
                     <motion.button

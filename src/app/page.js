@@ -7,7 +7,6 @@ import AboutSection from "@/components/About";
 import LiveTradingSection from "@/components/LiveTrading";
 import GroupCoachingSection from "@/components/GroupCoaching";
 import FreeResourcesSection from "@/components/FreeRessources";
-
 import Footer from "@/components/Footer";
 import { useTranslation } from "@/hooks/useTranslation";
 import DiscoveryCallSection from "@/components/DiscoveryCall";
@@ -15,6 +14,7 @@ import ProgramPillarsSection from "@/components/Pillars";
 import ComboOfferSection from "@/components/ComboOffer";
 import SignalsSection from "@/components/SignalsSection";
 import TestimonialsSection from "@/components/Testimonialss";
+import FAQSection from "@/components/FAQ";
 
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-   <Navigation/>
+      <Navigation/>
       <HeroSection />
       <ProgramPillarsSection/>
       {/* <AboutSection /> */}
@@ -37,8 +37,8 @@ export default function Home() {
       <GroupCoachingSection />
       <SignalsSection/>
       <FreeResourcesSection />
-    <TestimonialsSection/>
-  
+      <TestimonialsSection/>
+      <FAQSection/>
       <Footer />
     </main>
   );

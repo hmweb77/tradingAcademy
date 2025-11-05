@@ -1,6 +1,6 @@
 "use client";
 
-import { Users, MessageSquare, Trophy, BookOpen, CheckCircle, Sparkles } from "lucide-react";
+import { Users, MessageSquare, Trophy, BookOpen, CheckCircle, Sparkles, Loader2, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useInView } from "framer-motion";
@@ -17,11 +17,14 @@ export default function GroupCoachingSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [settings, setSettings] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchSettings() {
       try {
+        setIsLoading(true);
+        setError(null);
         const data = await sanityFetch({ 
           query: groupCoachingSettingsQuery,
           tags: ['groupCoachingSettings']
@@ -29,7 +32,10 @@ export default function GroupCoachingSection() {
         setSettings(data);
       } catch (error) {
         console.error('Error fetching group coaching settings:', error);
-      } 
+        setError('Failed to load program details. Please refresh the page.');
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchSettings();
   }, []);
@@ -143,7 +149,6 @@ export default function GroupCoachingSection() {
     },
   };
 
-
   return (
     <section id="coaching" ref={ref} className="py-24 scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -162,194 +167,228 @@ export default function GroupCoachingSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-          {/* Left Column - Benefits & Features */}
-          <div className="space-y-8">
-            {/* Benefits Grid */}
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
-              variants={containerVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-            >
-              {benefits.map((benefit, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-sm hover:shadow-md transition-shadow"
-                  variants={cardVariants}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                >
-                  <div className="p-6 text-center">
-                    <motion.div
-                      className="w-12 h-12 bg-[#00b66f]/10 rounded-lg flex items-center justify-center mx-auto mb-4"
-                      whileHover={{ rotate: 360, scale: 1.1 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      <benefit.icon className="h-6 w-6 text-[#00b66f]" />
-                    </motion.div>
-                    <h3 className="font-semibold text-[#0f172a] mb-2">
-                      {benefit.title}
-                    </h3>
-                    <p className="text-sm text-[#6e7b8a] leading-relaxed">
-                      {benefit.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+        {/* Loading State */}
+        {isLoading && (
+          <div className="text-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-[#00b66f] mb-4" />
+            <p className="text-[#6e7b8a]">Loading program details...</p>
+          </div>
+        )}
 
-            {/* Features Card */}
-            <motion.div
-              className="bg-[#00b66f]/5 border-[#00b66f]/20 rounded-lg border"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <div className="p-8">
-                <h3 className="text-xl font-semibold text-[#0f172a] mb-6 flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#00b66f]" />
-                  {t.coaching.includedTitle}
-                </h3>
+        {/* Error State */}
+        {error && !isLoading && (
+          <motion.div
+            className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-red-700 font-medium mb-2">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="text-red-600 hover:text-red-700 underline text-sm font-medium"
+                >
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Main Content */}
+        {!isLoading && !error && (
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+              {/* Left Column - Benefits & Features */}
+              <div className="space-y-8">
+                {/* Benefits Grid */}
                 <motion.div
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-6"
                   variants={containerVariants}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
                 >
-                  {features.map((feature, index) => (
+                  {benefits.map((benefit, index) => (
                     <motion.div
                       key={index}
-                      className="flex items-center space-x-3 group"
-                      variants={featureItemVariants}
-                      whileHover={{ x: 5 }}
+                      className="bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-sm hover:shadow-md transition-shadow"
+                      variants={cardVariants}
+                      whileHover={{ y: -5, scale: 1.02 }}
                     >
-                      <motion.div
-                        className="w-2 h-2 bg-[#00b66f] rounded-full flex-shrink-0"
-                        whileHover={{ scale: 1.5 }}
-                      />
-                      <span className="text-[#6e7b8a] group-hover:text-[#0f172a] transition-colors">
-                        {feature}
-                      </span>
+                      <div className="p-6 text-center">
+                        <motion.div
+                          className="w-12 h-12 bg-[#00b66f]/10 rounded-lg flex items-center justify-center mx-auto mb-4"
+                          whileHover={{ rotate: 360, scale: 1.1 }}
+                          transition={{ duration: 0.6 }}
+                        >
+                          <benefit.icon className="h-6 w-6 text-[#00b66f]" />
+                        </motion.div>
+                        <h3 className="font-semibold text-[#0f172a] mb-2">
+                          {benefit.title}
+                        </h3>
+                        <p className="text-sm text-[#6e7b8a] leading-relaxed">
+                          {benefit.description}
+                        </p>
+                      </div>
                     </motion.div>
                   ))}
                 </motion.div>
-              </div>
-            </motion.div>
-          </div>
 
-          {/* Right Column - Image with Floating Price Card */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div
-              className="relative rounded-lg overflow-hidden shadow-xl"
-              variants={imageVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Image
-                src="/trading2.png"
-                alt="Group coaching session with diverse professionals"
-                width={600}
-                height={400}
-                className="w-full h-96 object-cover rounded-lg"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            </motion.div>
-
-            {/* Floating Price Card with Sanity Data */}
-            <motion.div
-              className="absolute -bottom-8 -left-8 bg-[#f7f9fa]/95 backdrop-blur-sm max-w-xs rounded-lg border border-[#e2e5e9] shadow-lg"
-              variants={floatingCardVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              whileHover={{ y: -5, scale: 1.05 }}
-            >
-              <div className="p-6">
-                <div className="text-center">
-                  <motion.div
-                    className="text-2xl font-bold text-[#00b66f] mb-1"
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    {getContent('programDurationDisplay') || t.coaching.weeks}
-                  </motion.div>
-                  <div className="text-sm text-[#6e7b8a] mb-4">
-                    {t.coaching.program}
-                  </div>
-                  <div className="text-lg font-semibold text-[#0f172a]">
-                    {getContent('priceDisplay') || t.coaching.price}
-                  </div>
-                  <div className="text-sm text-[#6e7b8a]">
-                    {getContent('paymentPlansText') || t.coaching.payment}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* CTA Section */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          <div className="max-w-2xl mx-auto bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-lg hover:shadow-xl transition-shadow">
-            <div className="p-8">
-              <motion.h3
-                className="text-2xl font-bold text-[#0f172a] mb-4 flex items-center justify-center gap-2"
-                whileHover={{ scale: 1.05 }}
-              >
-                <Sparkles className="h-6 w-6 text-[#00b66f]" />
-                {t.coaching.readyTitle}
-              </motion.h3>
-              <p className="text-[#6e7b8a] mb-6 leading-relaxed">
-                {t.coaching.readyDesc}
-              </p>
-              
-              {showEnrollmentButton ? (
-                <div className="space-y-4">
-                  <div className="flex justify-center space-x-4 text-sm text-[#6e7b8a] flex-wrap gap-2">
-                    <span>
-                      ✓ Next cohort: {getContent('nextCohortDisplay') || 'March 15th'}
-                    </span>
-                    <span className="text-[#00b66f] font-semibold">
-                      ✓ {getContent('spotsDisplay') || 'Only 12 spots available'}
-                    </span>
-                  </div>
-                  <motion.button
-                    onClick={handleLearnMore}
-                    className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-8 py-4 text-lg font-semibold rounded-lg group inline-flex items-center transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  
-                    data-testid="group-coaching-cta"
-                  >
-                    <Trophy className="h-5 w-5" />
-                    {t.coaching.reserveButton}
-                  </motion.button>
-                </div>
-              ) : (
+                {/* Features Card */}
                 <motion.div
-                  className="bg-[#f5b53f]/10 border border-[#f5b53f]/30 rounded-lg p-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  className="bg-[#00b66f]/5 border-[#00b66f]/20 rounded-lg border"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
                 >
-                  <p className="text-[#6e7b8a] font-medium">
-                    Enrollment currently closed. Next cohort opens soon!
-                  </p>
+                  <div className="p-8">
+                    <h3 className="text-xl font-semibold text-[#0f172a] mb-6 flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-[#00b66f]" />
+                      {t.coaching.includedTitle}
+                    </h3>
+                    <motion.div
+                      className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                      variants={containerVariants}
+                      initial="hidden"
+                      animate={isInView ? "visible" : "hidden"}
+                    >
+                      {features.map((feature, index) => (
+                        <motion.div
+                          key={index}
+                          className="flex items-center space-x-3 group"
+                          variants={featureItemVariants}
+                          whileHover={{ x: 5 }}
+                        >
+                          <motion.div
+                            className="w-2 h-2 bg-[#00b66f] rounded-full flex-shrink-0"
+                            whileHover={{ scale: 1.5 }}
+                          />
+                          <span className="text-[#6e7b8a] group-hover:text-[#0f172a] transition-colors">
+                            {feature}
+                          </span>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  </div>
                 </motion.div>
-              )}
+              </div>
+
+              {/* Right Column - Image with Floating Price Card */}
+              <motion.div
+                className="relative"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <motion.div
+                  className="relative rounded-lg overflow-hidden shadow-xl"
+                  variants={imageVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Image
+                    src="/trading2.png"
+                    alt="Group coaching session with diverse professionals"
+                    width={600}
+                    height={400}
+                    className="w-full h-96 object-cover rounded-lg"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                </motion.div>
+
+                {/* Floating Price Card with Sanity Data */}
+                <motion.div
+                  className="absolute -bottom-8 -left-8 bg-[#f7f9fa]/95 backdrop-blur-sm max-w-xs rounded-lg border border-[#e2e5e9] shadow-lg"
+                  variants={floatingCardVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  whileHover={{ y: -5, scale: 1.05 }}
+                >
+                  <div className="p-6">
+                    <div className="text-center">
+                      <motion.div
+                        className="text-2xl font-bold text-[#00b66f] mb-1"
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        {getContent('programDurationDisplay') || t.coaching.weeks}
+                      </motion.div>
+                      <div className="text-sm text-[#6e7b8a] mb-4">
+                        {t.coaching.program}
+                      </div>
+                      <div className="text-lg font-semibold text-[#0f172a]">
+                        {getContent('priceDisplay') || t.coaching.price}
+                      </div>
+                      <div className="text-sm text-[#6e7b8a]">
+                        {getContent('paymentPlansText') || t.coaching.payment}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
             </div>
-          </div>
-        </motion.div>
+
+            {/* CTA Section */}
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+            >
+              <div className="max-w-2xl mx-auto bg-[#f7f9fa] rounded-lg border border-[#e2e5e9] shadow-lg hover:shadow-xl transition-shadow">
+                <div className="p-8">
+                  <motion.h3
+                    className="text-2xl font-bold text-[#0f172a] mb-4 flex items-center justify-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <Sparkles className="h-6 w-6 text-[#00b66f]" />
+                    {t.coaching.readyTitle}
+                  </motion.h3>
+                  <p className="text-[#6e7b8a] mb-6 leading-relaxed">
+                    {t.coaching.readyDesc}
+                  </p>
+                  
+                  {showEnrollmentButton ? (
+                    <div className="space-y-4">
+                      <div className="flex justify-center space-x-4 text-sm text-[#6e7b8a] flex-wrap gap-2">
+                        <span>
+                          ✓ Next cohort: {getContent('nextCohortDisplay') || 'March 15th'}
+                        </span>
+                        <span className="text-[#00b66f] font-semibold">
+                          ✓ {getContent('spotsDisplay') || 'Only 12 spots available'}
+                        </span>
+                      </div>
+                      <motion.button
+                        onClick={handleLearnMore}
+                        className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-8 py-4 text-lg font-semibold rounded-lg group inline-flex items-center gap-2 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        data-testid="group-coaching-cta"
+                      >
+                        <Trophy className="h-5 w-5" />
+                        {t.coaching.reserveButton}
+                      </motion.button>
+                    </div>
+                  ) : (
+                    <motion.div
+                      className="bg-[#f5b53f]/10 border border-[#f5b53f]/30 rounded-lg p-4"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                    >
+                      <p className="text-[#6e7b8a] font-medium">
+                        Enrollment currently closed. Next cohort opens soon!
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
       </div>
 
       {/* Enrollment Popup */}

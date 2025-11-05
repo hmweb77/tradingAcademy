@@ -75,14 +75,7 @@ export default function SignalsSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div
-            className="inline-flex items-center gap-2 bg-[#f5b53f]/20 text-[#f5b53f] px-4 py-2 rounded-full text-sm font-semibold mb-6"
-            whileHover={{ scale: 1.05 }}
-          >
-            <Bell className="h-4 w-4" />
-            {t.signals.badge}
-          </motion.div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-[#00b66f] mb-6">
             {t.signals.title}
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">

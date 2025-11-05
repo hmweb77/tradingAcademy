@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Phone, Clock, CheckCircle, ChevronDown, Loader2 } from "lucide-react";
+import { Phone, Clock, CheckCircle, ChevronDown, Loader2, AlertTriangle } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -18,18 +18,115 @@ export default function DiscoveryCallSection() {
     goals: ''
   });
 
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
 
+  // Validation functions
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    if (!phone) return true; // Phone is optional
+    const re = /^[\d\s\-\+\(\)]+$/;
+    return re.test(phone) && phone.replace(/\D/g, '').length >= 10;
+  };
+
+  const validateField = (field, value) => {
+    switch(field) {
+      case 'name':
+        if (!value || value.trim().length < 2) {
+          return 'Name must be at least 2 characters';
+        }
+        return '';
+      
+      case 'email':
+        if (!value) {
+          return 'Email is required';
+        }
+        if (!validateEmail(value)) {
+          return 'Please enter a valid email address';
+        }
+        return '';
+      
+      case 'phone':
+        if (value && !validatePhone(value)) {
+          return 'Please enter a valid phone number';
+        }
+        return '';
+      
+      case 'experience':
+        if (!value) {
+          return 'Please select your experience level';
+        }
+        return '';
+      
+      default:
+        return '';
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setError('');
+    
+    // Real-time validation
+    if (touched[field]) {
+      const fieldError = validateField(field, value);
+      setErrors(prev => ({
+        ...prev,
+        [field]: fieldError
+      }));
+    }
+  };
+
+  const handleBlur = (field) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    const fieldError = validateField(field, formData[field]);
+    setErrors(prev => ({
+      ...prev,
+      [field]: fieldError
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    Object.keys(formData).forEach(field => {
+      if (field !== 'phone' && field !== 'goals') { // These are optional
+        const fieldError = validateField(field, formData[field]);
+        if (fieldError) {
+          newErrors[field] = fieldError;
+        }
+      }
+    });
+    
+    setErrors(newErrors);
+    setTouched({
+      name: true,
+      email: true,
+      experience: true
+    });
+    
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      setError('Please fix the errors above');
+      return;
+    }
+    
     setIsSubmitting(true);
     setError('');
 
     try {
-      // Send data to API route
       const response = await fetch('/api/discovery-call', {
         method: 'POST',
         headers: {
@@ -41,13 +138,14 @@ export default function DiscoveryCallSection() {
       const result = await response.json();
 
       if (!response.ok) {
+        if (result.rateLimitExceeded) {
+          throw new Error('⏱️ Too many requests. You can try again in 1 hour. This helps us prevent spam.');
+        }
         throw new Error(result.error || 'Failed to submit form');
       }
 
-      // Show success message
       setIsSubmitted(true);
       
-      // Reset form after 5 seconds
       setTimeout(() => {
         setFormData({
           name: '',
@@ -57,6 +155,8 @@ export default function DiscoveryCallSection() {
           goals: ''
         });
         setIsSubmitted(false);
+        setTouched({});
+        setErrors({});
       }, 15000);
 
     } catch (err) {
@@ -65,11 +165,6 @@ export default function DiscoveryCallSection() {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setError(''); // Clear error when user types
   };
 
   const benefits = [
@@ -277,15 +372,17 @@ export default function DiscoveryCallSection() {
                     exit={{ opacity: 0 }}
                     onSubmit={handleSubmit}
                     className="space-y-6"
+                    noValidate
                   >
-                    {/* Error Message */}
+                    {/* Global Error Message */}
                     {error && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg"
+                        className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start gap-2"
                       >
-                        {error}
+                        <AlertTriangle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                        <span>{error}</span>
                       </motion.div>
                     )}
 
@@ -299,12 +396,26 @@ export default function DiscoveryCallSection() {
                         type="text"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
+                        onBlur={() => handleBlur('name')}
                         placeholder={t.discovery.name}
-                        required
                         disabled={isSubmitting}
-                        className="w-full px-4 py-3 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] text-[#0f172a] placeholder:text-[#6e7b8a] disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 bg-[#ffffff] text-[#0f172a] placeholder:text-[#6e7b8a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                          errors.name && touched.name
+                            ? 'border-red-300 focus:ring-red-500'
+                            : 'border-[#e2e5e9] focus:ring-[#00b66f]'
+                        }`}
                         data-testid="input-name"
                       />
+                      {errors.name && touched.name && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-500 text-sm flex items-center gap-1"
+                        >
+                          <AlertTriangle className="h-4 w-4" />
+                          {errors.name}
+                        </motion.p>
+                      )}
                     </div>
 
                     {/* Email Input */}
@@ -317,12 +428,26 @@ export default function DiscoveryCallSection() {
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
+                        onBlur={() => handleBlur('email')}
                         placeholder={t.discovery.email}
-                        required
                         disabled={isSubmitting}
-                        className="w-full px-4 py-3 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] text-[#0f172a] placeholder:text-[#6e7b8a] disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 bg-[#ffffff] text-[#0f172a] placeholder:text-[#6e7b8a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                          errors.email && touched.email
+                            ? 'border-red-300 focus:ring-red-500'
+                            : 'border-[#e2e5e9] focus:ring-[#00b66f]'
+                        }`}
                         data-testid="input-email"
                       />
+                      {errors.email && touched.email && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-500 text-sm flex items-center gap-1"
+                        >
+                          <AlertTriangle className="h-4 w-4" />
+                          {errors.email}
+                        </motion.p>
+                      )}
                     </div>
 
                     {/* Phone Input */}
@@ -335,11 +460,26 @@ export default function DiscoveryCallSection() {
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
+                        onBlur={() => handleBlur('phone')}
                         placeholder={t.discovery.phone}
                         disabled={isSubmitting}
-                        className="w-full px-4 py-3 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] text-[#0f172a] placeholder:text-[#6e7b8a] disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 bg-[#ffffff] text-[#0f172a] placeholder:text-[#6e7b8a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                          errors.phone && touched.phone
+                            ? 'border-red-300 focus:ring-red-500'
+                            : 'border-[#e2e5e9] focus:ring-[#00b66f]'
+                        }`}
                         data-testid="input-phone"
                       />
+                      {errors.phone && touched.phone && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-500 text-sm flex items-center gap-1"
+                        >
+                          <AlertTriangle className="h-4 w-4" />
+                          {errors.phone}
+                        </motion.p>
+                      )}
                     </div>
 
                     {/* Experience Select */}
@@ -351,8 +491,13 @@ export default function DiscoveryCallSection() {
                         <button
                           type="button"
                           onClick={() => !isSubmitting && setIsSelectOpen(!isSelectOpen)}
+                          onBlur={() => handleBlur('experience')}
                           disabled={isSubmitting}
-                          className="w-full px-4 py-3 border border-[#e2e5e9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00b66f] bg-[#ffffff] text-left flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed"
+                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 bg-[#ffffff] text-left flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
+                            errors.experience && touched.experience
+                              ? 'border-red-300 focus:ring-red-500'
+                              : 'border-[#e2e5e9] focus:ring-[#00b66f]'
+                          }`}
                           data-testid="select-experience"
                         >
                           <span className={formData.experience ? "text-[#0f172a]" : "text-[#6e7b8a]"}>
@@ -389,6 +534,16 @@ export default function DiscoveryCallSection() {
                           )}
                         </AnimatePresence>
                       </div>
+                      {errors.experience && touched.experience && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-500 text-sm flex items-center gap-1"
+                        >
+                          <AlertTriangle className="h-4 w-4" />
+                          {errors.experience}
+                        </motion.p>
+                      )}
                     </div>
 
                     {/* Goals Textarea */}
