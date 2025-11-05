@@ -114,18 +114,18 @@ export default function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+          {/* Logo - FIXED: Responsive text sizing and proper wrapping */}
           <motion.button
             onClick={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
               setIsMenuOpen(false);
             }}
-            className="flex-shrink-0"
+            className="flex-shrink-0 min-w-0" // Added min-w-0 to allow text truncation
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
             aria-label="Go to homepage"
           >
-            <span className="text-2xl font-bold text-[#0f172a] bg-gradient-to-r from-[#0f172a] to-[#00b66f] bg-clip-text">
+            <span className="text-lg sm:text-xl md:text-2xl font-bold text-[#0f172a] bg-gradient-to-r from-[#0f172a] to-[#00b66f] bg-clip-text block truncate">
               Ten Percent Academy
             </span>
           </motion.button>
@@ -143,7 +143,7 @@ export default function Navigation() {
                 <motion.button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="text-[#6e7b8a] hover:text-[#0f172a] px-3 py-2 text-sm font-medium transition-colors relative group"
+                  className="text-[#6e7b8a] hover:text-[#0f172a] px-3 py-2 text-sm font-medium transition-colors relative group whitespace-nowrap"
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   data-testid={`nav-${item.id}`}
@@ -161,11 +161,11 @@ export default function Navigation() {
           </div>
 
           {/* CTA Button and Language Selector */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
             <LanguageSelector />
             <motion.button
               onClick={() => scrollToSection("coaching")}
-              className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-4 py-2 rounded-lg font-medium inline-flex items-center gap-2"
+              className="bg-[#f5b53f] hover:bg-[#e6a52e] text-white px-4 py-2 rounded-lg font-medium inline-flex items-center gap-2 whitespace-nowrap"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               data-testid="nav-cta"
@@ -175,8 +175,8 @@ export default function Navigation() {
             </motion.button>
           </div>
 
-          {/* Mobile menu button and language selector */}
-          <div className="md:hidden flex items-center space-x-2">
+          {/* Mobile menu button and language selector - FIXED: Better spacing */}
+          <div className="md:hidden flex items-center gap-2 flex-shrink-0 ml-2">
             <LanguageSelector />
             <motion.button
               className="p-2 rounded-lg hover:bg-[#00b66f]/10 transition-colors"
