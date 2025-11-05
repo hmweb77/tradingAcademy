@@ -1,11 +1,72 @@
 @import "tailwindcss";
 
-/* Prevent horizontal scroll on mobile */
+/* CRITICAL FIX: Prevent horizontal scroll on mobile */
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
-    overflow-x: hidden;
-  }
-  
-  /* Ensure all containers respect viewport width */
-  * {
-    max-width: 100%;
-  }
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+/* Ensure all direct children of body respect viewport width */
+body > * {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Fix for main content wrapper */
+main {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Ensure sections don't overflow */
+section {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Fix for any absolute/fixed positioned elements */
+[class*="fixed"],
+[class*="absolute"] {
+  max-width: 100vw;
+}
+
+/* Specific fix for containers with padding that might cause overflow */
+.max-w-7xl,
+.max-w-6xl,
+.max-w-5xl,
+.max-w-4xl,
+.max-w-3xl,
+.max-w-2xl {
+  max-width: 100% !important;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .max-w-7xl { max-width: 80rem !important; }
+  .max-w-6xl { max-width: 72rem !important; }
+  .max-w-5xl { max-width: 64rem !important; }
+  .max-w-4xl { max-width: 56rem !important; }
+  .max-w-3xl { max-width: 48rem !important; }
+  .max-w-2xl { max-width: 42rem !important; }
+}
+
+/* Prevent text from causing overflow */
+* {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Fix for images and media */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
