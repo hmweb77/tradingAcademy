@@ -1,2 +1,11 @@
 @import "tailwindcss";
 
+/* Prevent horizontal scroll on mobile */
+body {
+    overflow-x: hidden;
+  }
+  
+  /* Ensure all containers respect viewport width */
+  * {
+    max-width: 100%;
+  }
