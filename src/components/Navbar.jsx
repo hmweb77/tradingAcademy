@@ -5,6 +5,7 @@ import { Menu, X, PhoneCall } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import LanguageSelector from "@/components/LanguageSelector";
+import Image from "next/image";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -125,9 +126,8 @@ export default function Navigation() {
             transition={{ duration: 0.2 }}
             aria-label="Go to homepage"
           >
-            <span className="text-lg sm:text-xl md:text-2xl font-bold text-[#0f172a] bg-gradient-to-r from-[#0f172a] to-[#00b66f] bg-clip-text block truncate">
-              Ten Percent Academy
-            </span>
+            <Image src="/LogoP.png" alt="logo" width={200} height={50}  />
+
           </motion.button>
 
           {/* Desktop Menu */}

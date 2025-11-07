@@ -48,7 +48,7 @@ export async function POST(request) {
     const emailData = {
       sender: {
         name: "Ten Percent Academy",
-        email: "contact@hmwebs.com" // Replace with your verified sender email
+        email: "contact@tenpercentacademy.com" // Replace with your verified sender email
       },
       to: [
         {
@@ -228,7 +228,7 @@ export async function POST(request) {
     const adminEmailData = {
       sender: {
         name: "Ten Percent Academy",
-        email: "contact@hmwebs.com"
+        email: "contact@tenpercentacademy.com"
       },
       to: [
         {
