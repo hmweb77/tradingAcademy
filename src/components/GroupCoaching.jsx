@@ -308,7 +308,37 @@ export default function GroupCoachingSection() {
                   animate={isInView ? "visible" : "hidden"}
                   whileHover={{ y: -5, scale: 1.05 }}
                 >
-                  <div className="p-6">
+                <div className="p-6">
+  <div className="text-center">
+    <motion.div
+      className="text-2xl font-bold text-[#00b66f] mb-1"
+      animate={{ scale: [1, 1.05, 1] }}
+      transition={{ duration: 2, repeat: Infinity }}
+    >
+      {getContent('programDurationDisplay') || t.coaching.weeks}
+    </motion.div>
+
+    <div className="text-sm text-[#6e7b8a] mb-4">
+      {t.coaching.program}
+    </div>
+
+    {/* PRICE WITH DISCOUNT */}
+    <div className="flex items-center justify-center gap-2 mb-1">
+      <span className="text-[#ff3b30] line-through text-base font-medium">
+        300$
+      </span>
+      <span className="text-[#00b66f] text-xl font-bold">
+        170$
+      </span>
+    </div>
+
+    <div className="text-sm text-[#6e7b8a]">
+      {getContent('paymentPlansText') || t.coaching.payment}
+    </div>
+  </div>
+</div>
+
+                  {/* <div className="p-6">
                     <div className="text-center">
                       <motion.div
                         className="text-2xl font-bold text-[#00b66f] mb-1"
@@ -327,7 +357,7 @@ export default function GroupCoachingSection() {
                         {getContent('paymentPlansText') || t.coaching.payment}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </motion.div>
               </motion.div>
             </div>

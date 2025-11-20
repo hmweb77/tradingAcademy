@@ -70,3 +70,47 @@ iframe {
   max-width: 100%;
   height: auto;
 }
+
+/* Optional: Add these styles to your globals.css for enhanced countdown animations */
+
+/* Pulse animation for countdown timer */
+@keyframes countdown-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.countdown-pulse {
+  animation: countdown-pulse 2s ease-in-out infinite;
+}
+
+/* Urgent flash animation when time is running out */
+@keyframes urgent-flash {
+  0%, 100% {
+    background-color: rgba(239, 68, 68, 0.8);
+  }
+  50% {
+    background-color: rgba(249, 115, 22, 0.9);
+  }
+}
+
+.countdown-urgent {
+  animation: urgent-flash 1s ease-in-out infinite;
+}
+
+/* Glow effect for countdown numbers */
+@keyframes countdown-glow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.6);
+  }
+}
+
+.countdown-glow {
+  animation: countdown-glow 2s ease-in-out infinite;
+}

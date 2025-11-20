@@ -133,7 +133,16 @@ export default function SignalsSection() {
             </div>
 
             <div className="text-center mb-6">
-              <div className="text-4xl font-bold text-[#f5b53f] mb-2">{t.signals.price}</div>
+              {/* <div className="text-4xl font-bold text-[#f5b53f] mb-2">{t.signals.price}</div> */}
+              <div className="flex items-center justify-center gap-3 mb-2">
+  <span className="text-[#ff3b30] line-through text-3xl font-semibold">
+    99$
+  </span>
+  <span className="text-4xl font-bold text-[#f5b53f]">
+    50$
+  </span>
+</div>
+
               <div className="text-gray-300">{t.signals.availability}</div>
             </div>
 

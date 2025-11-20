@@ -248,9 +248,7 @@ export async function POST(request) {
               </div>
               
               <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #2196f3;">
-                <p style="margin: 0; color: #0f172a; font-size: 14px;">
-                  <strong>💡 Pro Tip:</strong> Consider offering a 7-day trial or money-back guarantee to increase conversion rates and build trust with new subscribers.
-                </p>
+  
               </div>
               
               <div class="footer">
